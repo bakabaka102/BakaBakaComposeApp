@@ -14,7 +14,7 @@ import com.baka.composeapp.ui.drawermenu.screen.SettingScreen
 @Composable
 fun SetUpNavGraph(
     navController: NavHostController,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
 ) {
     NavHost(
         navController = navController,

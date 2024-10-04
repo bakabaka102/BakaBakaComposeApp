@@ -2,7 +2,6 @@ package com.baka.composeapp.ui.drawermenu.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,15 +41,12 @@ fun SettingScreen(innerPadding: PaddingValues) {
         bottomBar = {
             BottomNavigationBar(
                 navController = navController,
-                modifier = Modifier
+                modifier = Modifier.padding(innerPadding),
             )
         }) { paddingValues ->
-        Box(
-            modifier = Modifier.padding(paddingValues)
-        ) {
-            NavigationGraph(
-                navController = navController,
-            )
-        }
+        NavigationGraph(
+            navController = navController,
+            innerPadding = paddingValues,
+        )
     }
 }

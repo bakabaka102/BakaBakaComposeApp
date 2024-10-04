@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import hn.single.ticktok.ui.bottomnavigation.BottomNavigationItems
 
 @Composable
 fun BottomNavigationBar(

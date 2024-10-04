@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -16,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.baka.composeapp.ui.dialog.DialogInput
@@ -25,11 +25,11 @@ import com.baka.composeapp.ui.dialog.ShowConfirmDialog
 import com.baka.composeapp.ui.drawermenu.HomeViewModel
 
 @Composable
-fun Screen3() {
+fun Screen3(innerPadding: PaddingValues) {
     val viewModel = viewModel<HomeViewModel>()
     Column(
         modifier = Modifier
-            .padding(20.dp)
+            .padding(innerPadding)
             .fillMaxSize()
             .background(Color.Blue),
         verticalArrangement = Arrangement.Center,

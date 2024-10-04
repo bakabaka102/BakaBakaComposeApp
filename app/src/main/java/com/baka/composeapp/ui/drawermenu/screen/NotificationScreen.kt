@@ -19,6 +19,7 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -83,7 +85,7 @@ fun TabRow(innerPadding: PaddingValues, tabItems: List<TabItem>) {
         TabRow(selectedTabIndex = selectedTabIndex) {
             tabItems.forEachIndexed { index, tabItem ->
 
-                androidx.compose.material3.Tab(
+                Tab(
                     selected = index == selectedTabIndex,
                     onClick = {
                         selectedTabIndex = index
@@ -114,3 +116,7 @@ fun TabRow(innerPadding: PaddingValues, tabItems: List<TabItem>) {
         }
     }
 }
+
+data class TabItem(
+    val title: String, val unSelectedItem: ImageVector, val selectedIcon: ImageVector
+)

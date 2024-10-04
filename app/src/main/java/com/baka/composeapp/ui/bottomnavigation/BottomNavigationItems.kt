@@ -1,4 +1,4 @@
-package hn.single.ticktok.ui.bottomnavigation
+package com.baka.composeapp.ui.bottomnavigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
