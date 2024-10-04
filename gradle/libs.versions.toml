@@ -3,14 +3,15 @@ agp = "8.5.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.8.3"
-activityCompose = "1.8.0"
-composeBom = "2024.04.01"
-serialization_version = "1.8.20"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.6"
+activityCompose = "1.9.2"
+composeBom = "2024.09.03"
+serialization_version = "1.8.22"
 composeNav = "2.7.1"
-navigationCompose = "2.8.1"
+navigationCompose = "2.8.2"
+liveDataCompose = "1.7.3"
 #material-icons-extended = "1.6.8"
 
 [libraries]
@@ -31,8 +32,9 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 #Navigation
 #androidx-navigation = { group = "androidx.navigation:navigation-compose", name = "compose-navigation", version.ref = "composeNav" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-
-#androidx-material-icons-extended = {  group = "androidx.compose.material", name = "material-icons-extended"}
+#implementation("androidx.compose.runtime:runtime-livedata:1.7.3")
+androidx-compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "liveDataCompose" }
+androidx-material-icons-extended = {  group = "androidx.compose.material", name = "material-icons-extended"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
