@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.baka.composeapp.features.productlist.models.Product
 
 
@@ -83,7 +84,11 @@ private fun ItemRow(product: Product, onItemClick: (Product) -> Unit) {
 
 
 @Composable
-fun ProductListPage(innerPadding: PaddingValues) {
+fun ProductListPage(
+    innerPadding: PaddingValues,
+    navController: NavController,
+) {
+
     val listState = rememberLazyListState()
     val productList = listOf(
         Product(1, "Smartphone", 599.99),
@@ -128,6 +133,8 @@ fun ProductListPage(innerPadding: PaddingValues) {
             items(productList) { product ->
                 ItemRow(product) {
                     Log.d("Product", "Item click === $it")
+                    navController.navigate(Screens.ProductDetailScreen.route)
+                    //NavigationGraph(navController = navController, innerPadding = innerPadding)
                 }
             }
         }

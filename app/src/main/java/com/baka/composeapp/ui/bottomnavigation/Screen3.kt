@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,22 +23,22 @@ import com.baka.composeapp.ui.dialog.ShowConfirmDialog
 import com.baka.composeapp.ui.drawermenu.HomeViewModel
 
 @Composable
-fun Screen3(innerPadding: PaddingValues) {
+fun Screen3() {
     val viewModel = viewModel<HomeViewModel>()
     Column(
         modifier = Modifier
-            .padding(innerPadding)
             .fillMaxSize()
             .background(Color.Blue),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-
         val count: State<Int?> = viewModel.count.observeAsState()
 
         Text(
-            text = "Home Screen ${count.value}", fontSize = 40.sp, color = Color.Black
+            text = "Clicked: ${count.value}",
+            fontSize = 24.sp,
+            color = Color.Black
         )
         Button(onClick = {
             viewModel.incrementCount()

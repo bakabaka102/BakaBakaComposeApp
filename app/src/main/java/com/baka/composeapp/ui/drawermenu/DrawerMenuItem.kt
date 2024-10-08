@@ -9,12 +9,3 @@ data class DrawerMenuItem(
     val unSelectedIcon: ImageVector,
     val badgeCount: Int? = null,
 )
-
-sealed class Screens(var route: String) {
-
-    data object Home : Screens("home")
-    data object Profile : Screens("profile")
-    data object Notification : Screens("notification")
-    data object Setting : Screens("setting")
-    data object ProductsScreen : Screens("products")
-}

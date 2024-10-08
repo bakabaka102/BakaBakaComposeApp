@@ -5,10 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.baka.composeapp.ui.drawermenu.screen.NotificationScreen
-import com.baka.composeapp.ui.drawermenu.screen.ProductListPage
 import com.baka.composeapp.ui.drawermenu.screen.HomeScreen
+import com.baka.composeapp.ui.drawermenu.screen.NotificationScreen
+import com.baka.composeapp.ui.drawermenu.screen.ProductDetailScreen
+import com.baka.composeapp.ui.drawermenu.screen.ProductListPage
 import com.baka.composeapp.ui.drawermenu.screen.ProfileScreen
+import com.baka.composeapp.ui.drawermenu.screen.Screens
 import com.baka.composeapp.ui.drawermenu.screen.SettingScreen
 
 @Composable
@@ -35,7 +37,11 @@ fun SetUpNavGraph(
         }
 
         composable(route = Screens.ProductsScreen.route) {
-            ProductListPage(innerPadding = innerPadding)
+            ProductListPage(innerPadding = innerPadding, navController = navController)
+        }
+
+        composable(route = Screens.ProductDetailScreen.route, /*arguments = */) {
+            ProductDetailScreen(innerPadding = innerPadding)
         }
     }
 }

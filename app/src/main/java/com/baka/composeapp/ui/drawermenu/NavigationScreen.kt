@@ -1,7 +1,6 @@
 package com.baka.composeapp.ui.drawermenu
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -39,12 +38,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.baka.composeapp.helper.Logger
+import com.baka.composeapp.ui.drawermenu.screen.Screens
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun NavigationScreenMain() {
-    val items = drawerMenuItems()
+    //val items = drawerMenuItems()
+    val items = drawerItems()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
@@ -52,12 +54,21 @@ fun NavigationScreenMain() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val topBarTitle = if (currentRoute != null) {
+    /*val topBarTitle = if (currentRoute != null) {
         items[items.indexOfFirst {
             it.route == currentRoute
         }].title
     } else {
         items[0].title
+    }*/
+    val topBarTitle = when (currentRoute) {
+        Screens.Home.route -> Screens.Home.title
+        Screens.Profile.route -> Screens.Profile.title
+        Screens.Notification.route -> Screens.Notification.title
+        Screens.Setting.route -> Screens.Setting.title
+        Screens.ProductsScreen.route -> Screens.ProductsScreen.title
+        Screens.ProductDetailScreen.route -> Screens.ProductDetailScreen.title
+        else -> ""
     }
     ModalNavigationDrawer(
         gesturesEnabled = drawerState.isOpen,
@@ -72,19 +83,19 @@ fun NavigationScreenMain() {
 
 @Composable
 private fun DrawerContent(
-    items: List<DrawerMenuItem>,
+    items: List<Screens>,
     currentRoute: String?,
     context: Context,
     navController: NavHostController,
     scope: CoroutineScope,
-    drawerState: DrawerState
+    drawerState: DrawerState,
 ) {
     ModalDrawerSheet {
         NavBarHeader()
         Spacer(modifier = Modifier.height(8.dp))
         NavBarBody(
             items = items,
-            currentRoute = currentRoute
+            currentRoute = currentRoute,
         ) { currentNavigationItem ->
             if (currentNavigationItem.route == "share") {
                 Toast.makeText(context, "Share", Toast.LENGTH_LONG).show()
@@ -122,7 +133,7 @@ private fun SetupAppBar(
     topBarTitle: String,
     scope: CoroutineScope,
     drawerState: DrawerState,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     Scaffold(
         topBar = {
@@ -145,10 +156,19 @@ private fun SetupAppBar(
                 })
         }
     ) { innerPadding ->
-        Log.d("TAG_Padding", "PaddingValue ===== $innerPadding")
+        Logger.d("PaddingValue ===== $innerPadding")
         SetUpNavGraph(navController = navController, innerPadding = innerPadding)
     }
 }
+
+fun drawerItems() = listOf(
+    Screens.Home,
+    Screens.Profile,
+    Screens.Notification,
+    Screens.Setting,
+    Screens.ProductsScreen,
+    Screens.Share,
+)
 
 private fun drawerMenuItems() = listOf(
     DrawerMenuItem(

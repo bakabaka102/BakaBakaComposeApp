@@ -1,52 +1,49 @@
 package com.baka.composeapp.ui.drawermenu.screen
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.baka.composeapp.ui.bottomnavigation.BottomNavigationBar
-import com.baka.composeapp.ui.bottomnavigation.NavigationGraph
+import com.baka.composeapp.ui.bottomnavigation.BottomNavigationItems
+import com.baka.composeapp.ui.bottomnavigation.Screen1
+import com.baka.composeapp.ui.bottomnavigation.Screen2
+import com.baka.composeapp.ui.bottomnavigation.Screen3
 
 @Composable
 fun SettingScreen(innerPadding: PaddingValues) {
     val navController: NavHostController = rememberNavController()
-
-    Column(
-        modifier = Modifier
-            .padding(innerPadding)
-            .fillMaxSize()
-            .background(Color.Cyan),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Setting Screen",
-            fontSize = 40.sp,
-            color = Color.Black
-
-        )
-    }
-    Scaffold(
+    Scaffold(modifier = Modifier
+        .padding(top = innerPadding.calculateTopPadding())
+        .fillMaxSize(),
         bottomBar = {
             BottomNavigationBar(
                 navController = navController,
-                modifier = Modifier.padding(innerPadding),
             )
         }) { paddingValues ->
-        NavigationGraph(
+        NavHost(
             navController = navController,
-            innerPadding = paddingValues,
-        )
+            startDestination = BottomNavigationItems.Screen1.route,
+            modifier = Modifier.padding(paddingValues),
+        ) {
+            composable(BottomNavigationItems.Screen1.route) {
+                //BottomNavigationItems.Screen1
+                Screen1()
+            }
+            composable(BottomNavigationItems.Screen2.route) {
+                //BottomNavigationItems.Screen2
+                Screen2()
+            }
+            composable(BottomNavigationItems.Screen3.route) {
+                //BottomNavigationItems.Screen3
+                Screen3()
+            }
+        }
     }
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baka.composeapp.R
+import com.baka.composeapp.ui.drawermenu.screen.Screens
 
 @Composable
 fun NavBarHeader() {
@@ -45,9 +46,9 @@ fun NavBarHeader() {
 
 @Composable
 fun NavBarBody(
-    items: List<DrawerMenuItem>,
+    items: List<Screens>,
     currentRoute: String?,
-    onClick: (DrawerMenuItem) -> Unit,
+    onClick: (Screens) -> Unit,
 ) {
     items.forEach { navigationItem ->
         NavigationDrawerItem(
@@ -60,14 +61,16 @@ fun NavBarBody(
                 onClick(navigationItem)
             },
             icon = {
-                Icon(
-                    imageVector = if (currentRoute == navigationItem.route) {
-                        navigationItem.selectedIcon
-                    } else {
-                        navigationItem.unSelectedIcon
-                    },
-                    contentDescription = navigationItem.title
-                )
+                (if (currentRoute == navigationItem.route) {
+                    navigationItem.selectedIcon
+                } else {
+                    navigationItem.unSelectedIcon
+                })?.let {
+                    Icon(
+                        imageVector = it,
+                        contentDescription = navigationItem.title
+                    )
+                }
             },
             badge = {
                 navigationItem.badgeCount?.let {
