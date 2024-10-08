@@ -144,14 +144,11 @@ fun Screen1() {
             val colorPaint = Color(0xFFBA1122)
             val path = Path().apply {
                 moveTo(50f, 50f)
-                lineTo(300f, 300f)
+                lineTo(300f, 600f)
                 lineTo(550f, 50f)
                 close()
             }
-            Canvas(modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(16.dp),
+            Canvas(modifier = Modifier.padding(16.dp),
                 onDraw = {
                     drawPath(
                         path = path,
@@ -163,22 +160,39 @@ fun Screen1() {
 
         Spacer(modifier = Modifier.padding(8.dp))
         Column(modifier = Modifier.size(300.dp)) {
-            val colorPaint = Color(0xFFE0CB10)
+            /*val linePoints = listOf(
+                Pair(300f, 600f), Pair(400f, 400f),
+                Pair(175f, 200f), Pair(80f, 10f)
+            )*/
             val path = Path().apply {
-                moveTo(50f, 50f)
-                lineTo(300f, 300f)
-                lineTo(550f, 50f)
+                moveTo(300f, 600f)
+                lineTo(400f, 400f)
+                lineTo(175f, 200f)
+                lineTo(80f, 10f)
                 close()
             }
-            Canvas(modifier = Modifier
-                .padding(16.dp),
-                onDraw = {
-                    drawPath(
-                        path = path,
-                        color = colorPaint,
-                        style = Stroke(width = 8f, cap = StrokeCap.Round),
-                    )
-                })
+            Canvas(
+                modifier = Modifier
+                    .size(300.dp)
+                    .background(Color(0xFFEFF3F1))
+                    .padding(10.dp)
+            ) {
+                // Draw a rectangle
+                drawRect(color = Color(0xFFAA7800))
+                // Draw a circle
+                drawCircle(color = Color(0xFFAADD00), radius = 200f)
+                // Draw a custom path
+                drawPath(
+                    path = path,
+                    brush = Brush.horizontalGradient(
+                        listOf(
+                            Color.Blue,
+                            Color.Magenta
+                        )
+                    ),
+                    style = Stroke(width = 8f, cap = StrokeCap.Round)
+                )
+            }
         }
 
         Spacer(modifier = Modifier.padding(8.dp))
