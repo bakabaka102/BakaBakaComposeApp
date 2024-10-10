@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.baka.composeapp.ui.drawermenu.screen.HomeScreen
-import com.baka.composeapp.ui.drawermenu.screen.NotificationScreen
+import com.baka.composeapp.ui.drawermenu.screen.notification.NotificationScreen
 import com.baka.composeapp.ui.drawermenu.screen.ProductDetailScreen
 import com.baka.composeapp.ui.drawermenu.screen.ProductListPage
 import com.baka.composeapp.ui.drawermenu.screen.ProfileScreen

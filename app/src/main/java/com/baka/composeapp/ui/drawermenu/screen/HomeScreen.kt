@@ -24,7 +24,6 @@ import com.baka.composeapp.ui.dialog.DialogProgress
 import com.baka.composeapp.ui.dialog.ShowConfirmDialog
 import com.baka.composeapp.ui.drawermenu.HomeViewModel
 
-
 @Composable
 fun HomeScreen(innerPadding: PaddingValues) {
     val viewModel = viewModel<HomeViewModel>()
@@ -41,7 +40,7 @@ fun HomeScreen(innerPadding: PaddingValues) {
         val count: State<Int?> = viewModel.count.observeAsState()
 
         Text(
-            text = "Home Screen ${count.value}", fontSize = 40.sp, color = Color.Black
+            text = "Home Screen ${count.value}", fontSize = 24.sp, color = Color.Black
         )
         Button(onClick = {
             viewModel.incrementCount()

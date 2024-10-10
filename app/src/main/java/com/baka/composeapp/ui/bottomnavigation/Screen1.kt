@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -69,6 +70,16 @@ fun Screen1() {
         //https://dev.to/tkuenneth/drawing-and-painting-in-jetpack-compose-1-2okl
         Spacer(modifier = Modifier.padding(8.dp))
         SinCosPath()
+        Spacer(modifier = Modifier.padding(8.dp))
+        Column(modifier = Modifier.size(300.dp)) {
+            GenericShape { size, layoutDirection ->
+                moveTo(size.width / 2f, 0f)
+                lineTo(size.width, size.height)
+                lineTo(0f, size.height)
+            }
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+
     }
 }
 
@@ -289,10 +300,10 @@ private fun DrawLines() {
                         )
                         drawLine(
                             color = Color(0xFF91085B),
-                            start = Offset(0 + paddingSpace.div(2f), size.height - paddingSpace),
+                            start = Offset(0f, size.height - paddingSpace),
                             end = Offset(
-                                paddingSpace.div(2f),
-                                size.height - yAxisSpace * (i + 1)
+                                0f,
+                                size.height - (yAxisSpace * (i + 1))
                             ),
                             strokeWidth = 24f,
                             cap = StrokeCap.Round
