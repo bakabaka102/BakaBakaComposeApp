@@ -3,6 +3,8 @@ package com.baka.composeapp.ui.bottomnavigation
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,14 +14,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -31,7 +41,12 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baka.composeapp.helper.Logger
@@ -79,9 +94,128 @@ fun Screen1() {
             }
         }
         Spacer(modifier = Modifier.padding(8.dp))
-
+        DrawBezierCurves()
+        Spacer(modifier = Modifier.padding(8.dp))
+        DrawWithContent()
+        Spacer(modifier = Modifier.padding(8.dp))
+        ModifierDrawWithCache()
     }
 }
+
+@Composable
+@Preview
+fun ModifierDrawWithCache() {
+    //https://developer.android.com/develop/ui/compose/graphics/draw/modifiers
+    // [START android_compose_graphics_modifiers_drawWithCache]
+    Text(
+        "Hello Compose!",
+        modifier = Modifier
+            .padding(horizontal = 12.dp, vertical = 6.dp)
+            .drawWithCache {
+                val brush = Brush.linearGradient(
+                    listOf(
+                        Color(0xFF9E82F0),
+                        Color(0xFF42A5F5)
+                    )
+                )
+                onDrawBehind {
+                    drawRoundRect(
+                        brush,
+                        cornerRadius = CornerRadius(10.dp.toPx())
+                    )
+                }
+            }
+    )
+    // [END android_compose_graphics_modifiers_drawWithCache]
+}
+
+
+@Composable
+@Preview
+fun DrawWithContent(width: Float = 300f, height: Float = 300f) {
+    // [START android_compose_graphics_modifiers_drawWithContent]
+    //https://developer.android.com/develop/ui/compose/graphics/draw/modifiers
+    var pointerOffset by remember {
+        mutableStateOf(Offset(0f, 0f))
+    }
+    Column(
+        modifier = Modifier
+            .size(width.dp)
+            .pointerInput("dragging") {
+                detectDragGestures { change, dragAmount ->
+                    pointerOffset += dragAmount
+                }
+            }
+            .onSizeChanged {
+                pointerOffset = Offset(it.width / 2f, it.height / 2f)
+            }
+            .drawWithContent {
+                drawContent()
+                // draws a fully black area with a small keyhole at pointerOffset that’ll show part of the UI.
+                drawRect(
+                    Brush.radialGradient(
+                        listOf(Color.Transparent, Color.Black),
+                        center = pointerOffset,
+                        radius = 100.dp.toPx(),
+                    )
+                )
+            }
+    ) {
+        // Your composables here
+        Box(modifier = Modifier.size(width.dp)) {
+            Text(
+                text = "This is a demo text, it is hidden by a dark color.",
+                style = TextStyle(fontSize = 24.sp, color = Color.Red, textAlign = TextAlign.Center)
+            )
+        }
+    }
+    // [END android_compose_graphics_modifiers_drawWithContent]
+}
+
+@Composable
+fun DrawBezierCurves(height: Float = 80f, width: Float = 330f) {
+    //https://stackoverflow.com/questions/76148870/how-to-draw-or-create-this-curve-shape-in-jetpack-compose
+    Spacer(modifier = Modifier
+        .height(height.dp)
+        .width(width.dp)
+        .background(Color.White)
+        .drawWithCache {
+            onDrawBehind {
+                val path = Path().apply {
+                    moveTo(0f, 0f)
+                    cubicTo(
+                        x1 = width.dp.toPx() / 10,
+                        y1 = 0f,
+                        x2 = width.dp.toPx() / 4,
+                        y2 = (height - 10).dp.toPx(),
+                        x3 = width.dp.toPx() / 2,
+                        y3 = 70.dp.toPx()
+                    )
+                    cubicTo(
+                        x1 = width.dp.toPx() * 3 / 4,
+                        y1 = (height - 10).dp.toPx(),
+                        x2 = width.dp.toPx() - width.dp.toPx() / 10,
+                        y2 = 0f,
+                        x3 = width.dp.toPx(),
+                        y3 = 0f
+                    )
+                }
+                path.close()
+                drawPath(
+                    path = path,
+                    /*color = Color.Blue,*/
+                    brush = Brush.verticalGradient(listOf(Color.Blue, Color.Transparent)),
+                    /*style = Stroke(width = 6f, cap = StrokeCap.Round),*/
+                    style = Fill,
+                )
+            }
+        })
+
+    //https://viblo.asia/p/cai-tien-bottomnavigationview-trong-android-gGJ59bLrKX2
+    Spacer(modifier = Modifier.padding(8.dp))
+
+}
+
 
 @Composable
 private fun DrawOval2() {
@@ -338,5 +472,27 @@ private fun SinCosPath() {
                 color = Color.Blue
             )
         }
+    )
+    Spacer(
+        modifier = Modifier
+            .height(80.dp)
+            .width(300.dp)
+            .background(Color.White)
+            .drawWithCache {
+                onDrawBehind {
+                    drawLine(
+                        color = Color.Black, start = Offset(0f, 0f),
+                        end = Offset(size.width - 1, size.height - 1)
+                    )
+                    drawLine(
+                        Color.Black, Offset(0f, size.height - 1),
+                        Offset(size.width - 1, 0f)
+                    )
+                    drawCircle(
+                        Color.Red, 64f,
+                        Offset(size.width / 2, size.height / 2)
+                    )
+                }
+            }
     )
 }
