@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -53,7 +52,6 @@ import com.baka.composeapp.helper.Logger
 import kotlin.math.PI
 import kotlin.math.sin
 
-
 @Composable
 fun Screen1() {
     val scrollState = rememberScrollState()
@@ -77,8 +75,6 @@ fun Screen1() {
         DrawOval1()
         Spacer(modifier = Modifier.padding(8.dp))
         DrawOval2()
-        Spacer(modifier = Modifier.padding(8.dp))
-        DrawPath()
         //https://proandroiddev.com/line-chart-ui-with-jetpack-compose-a-simple-guide-f9b8b80efc83
         Spacer(modifier = Modifier.padding(8.dp))
         DrawLines()
@@ -86,19 +82,76 @@ fun Screen1() {
         Spacer(modifier = Modifier.padding(8.dp))
         SinCosPath()
         Spacer(modifier = Modifier.padding(8.dp))
-        Column(modifier = Modifier.size(300.dp)) {
-            GenericShape { size, layoutDirection ->
-                moveTo(size.width / 2f, 0f)
-                lineTo(size.width, size.height)
-                lineTo(0f, size.height)
-            }
-        }
+        DrawSpiltFourCircle()
         Spacer(modifier = Modifier.padding(8.dp))
         DrawBezierCurves()
         Spacer(modifier = Modifier.padding(8.dp))
         DrawWithContent()
         Spacer(modifier = Modifier.padding(8.dp))
         ModifierDrawWithCache()
+        Spacer(modifier = Modifier.padding(80.dp))
+    }
+}
+
+@Composable
+fun DrawSpiltFourCircle(width: Float = 300f, height: Float = 300f) {
+    Column(
+        modifier = Modifier
+            .size(width = width.dp, height = height.dp)
+            .background(Color.White)
+    ) {
+        val padding = 24f
+        val density = LocalDensity.current
+        val textPaint = remember(density) {
+            Paint().apply {
+                /*color = android.graphics.Color.BLACK*/
+                color = Color(0xFF91085B).toArgb()
+                textAlign = Paint.Align.CENTER
+                textSize = density.run { 24.sp.toPx() }
+                strokeWidth = density.run { 4.sp.toPx() }
+                isAntiAlias = true
+            }
+        }
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding.dp)
+
+        ) {
+            drawArc(
+                Color(color = 0xFFfa59fd),
+                startAngle = 0f,
+                sweepAngle = -90f,
+                useCenter = true,
+            )
+            drawContext.canvas.nativeCanvas.drawText(
+                "0",
+                size.width + density.run { padding.sp.toPx().div(2) },
+                size.height.div(2) + density.run { textPaint.textSize.div(2) },
+                textPaint,
+            )
+            drawArc(Color(0xFF60fcdc), 0f, 90f, true)
+            drawContext.canvas.nativeCanvas.drawText(
+                "270",
+                size.width.div(2),
+                density.run { textPaint.textSize.div(2) },
+                textPaint,
+            )
+            drawArc(Color(0xFFfc9a57), 90f, 90f, true)
+            drawContext.canvas.nativeCanvas.drawText(
+                "90",
+                size.width.div(2),
+                size.height - density.run { textPaint.textSize.div(2) },
+                textPaint,
+            )
+            drawArc(Color(0xFFfef259), -90f, -90f, true)
+            drawContext.canvas.nativeCanvas.drawText(
+                "180",
+                density.run { padding.sp.toPx().div(2) },
+                size.height.div(2) + density.run { textPaint.textSize.div(2) },
+                textPaint,
+            )
+        }
     }
 }
 
@@ -108,23 +161,25 @@ fun ModifierDrawWithCache() {
     //https://developer.android.com/develop/ui/compose/graphics/draw/modifiers
     // [START android_compose_graphics_modifiers_drawWithCache]
     Text(
-        "Hello Compose!",
+        color = Color.White,
+        text = "Hello Compose!",
         modifier = Modifier
-            .padding(horizontal = 12.dp, vertical = 6.dp)
+            /*.padding(horizontal = 12.dp, vertical = 6.dp)*/
             .drawWithCache {
                 val brush = Brush.linearGradient(
                     listOf(
                         Color(0xFF9E82F0),
-                        Color(0xFF42A5F5)
+                        Color(0xFF42A5F5),
                     )
                 )
                 onDrawBehind {
                     drawRoundRect(
-                        brush,
-                        cornerRadius = CornerRadius(10.dp.toPx())
+                        brush = brush,
+                        cornerRadius = CornerRadius(10.dp.toPx()),
                     )
                 }
             }
+            .padding(12.dp)
     )
     // [END android_compose_graphics_modifiers_drawWithCache]
 }
@@ -305,10 +360,10 @@ private fun DrawCircle() {
         onClick = { /*TODO*/ },
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
-            .padding(24.dp)
     ) {
-        Canvas(modifier = Modifier.size(200.dp), onDraw = {
+        Canvas(modifier = Modifier
+            .size(200.dp)
+            .padding(24.dp), onDraw = {
             drawCircle(Color(0xFFAAFF00))
         })
     }
@@ -320,41 +375,20 @@ private fun DrawRectangle() {
         onClick = { /*TODO*/ },
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
-            .padding(24.dp)
     ) {
         Canvas(
-            modifier = Modifier.size(200.dp)
+            modifier = Modifier
+                .size(200.dp)
+                .padding(24.dp)
         ) {
             drawRect(
                 topLeft = Offset(50f, 50f),
-                size = Size(300f, 300f),
+                /*size = Size(300f, 300f),*/
                 color = Color.Red,
                 alpha = 1f,
                 style = Fill,
             )
         }
-    }
-}
-
-@Composable
-private fun DrawPath() {
-    Column(modifier = Modifier.size(300.dp)) {
-        val colorPaint = Color(0xFFBA1122)
-        val path = Path().apply {
-            moveTo(50f, 50f)
-            lineTo(300f, 600f)
-            lineTo(550f, 50f)
-            close()
-        }
-        Canvas(modifier = Modifier.padding(16.dp),
-            onDraw = {
-                drawPath(
-                    path = path,
-                    color = colorPaint,
-                    style = Stroke(width = 8f, cap = StrokeCap.Round),
-                )
-            })
     }
 }
 
@@ -366,6 +400,12 @@ private fun DrawLines() {
                 Pair(300f, 600f), Pair(400f, 400f),
                 Pair(175f, 200f), Pair(80f, 10f)
             )*/
+        /*val path = Path().apply {
+            moveTo(50f, 50f)
+            lineTo(300f, 600f)
+            lineTo(550f, 50f)
+            close()
+        }*/
         val path = Path().apply {
             moveTo(300f, 600f)
             lineTo(400f, 400f)
