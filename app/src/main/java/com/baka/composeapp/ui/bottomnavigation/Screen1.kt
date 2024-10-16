@@ -1,6 +1,7 @@
 package com.baka.composeapp.ui.bottomnavigation
 
 import android.graphics.Paint
+import android.graphics.RectF
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -97,26 +98,28 @@ fun Screen1() {
 fun DrawSpiltFourCircle(width: Float = 300f, height: Float = 300f) {
     Column(
         modifier = Modifier
-            .size(width = width.dp, height = height.dp)
-            .background(Color.White)
+            .fillMaxSize()
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val padding = 24f
+        val padding = 48f
         val density = LocalDensity.current
         val textPaint = remember(density) {
             Paint().apply {
                 /*color = android.graphics.Color.BLACK*/
                 color = Color(0xFF91085B).toArgb()
                 textAlign = Paint.Align.CENTER
-                textSize = density.run { 24.sp.toPx() }
+                textSize = density.run { 20.sp.toPx() }
                 strokeWidth = density.run { 4.sp.toPx() }
                 isAntiAlias = true
             }
         }
         Canvas(
             modifier = Modifier
-                .fillMaxSize()
+                .width(width.dp)
+                .height(height.dp)
+                .background(Color(0xFFC2A7F3))
                 .padding(padding.dp)
-
         ) {
             drawArc(
                 Color(color = 0xFFfa59fd),
@@ -126,31 +129,63 @@ fun DrawSpiltFourCircle(width: Float = 300f, height: Float = 300f) {
             )
             drawContext.canvas.nativeCanvas.drawText(
                 "0",
-                size.width + density.run { padding.sp.toPx().div(2) },
-                size.height.div(2) + density.run { textPaint.textSize.div(2) },
+                size.width + density.run { padding.dp.div(2).toPx() },
+                size.height.div(2) + density.run { padding.div(2) },
                 textPaint,
             )
             drawArc(Color(0xFF60fcdc), 0f, 90f, true)
             drawContext.canvas.nativeCanvas.drawText(
                 "270",
-                size.width.div(2),
-                density.run { textPaint.textSize.div(2) },
+                0 + size.width.div(2),
+                0f - density.run { padding.div(2) },
                 textPaint,
             )
             drawArc(Color(0xFFfc9a57), 90f, 90f, true)
             drawContext.canvas.nativeCanvas.drawText(
                 "90",
-                size.width.div(2),
-                size.height - density.run { textPaint.textSize.div(2) },
+                0 + size.width.div(2),
+                size.height + density.run { textPaint.textSize.div(2) } + density.run {
+                    padding.dp.div(2).toPx()
+                },
                 textPaint,
             )
             drawArc(Color(0xFFfef259), -90f, -90f, true)
             drawContext.canvas.nativeCanvas.drawText(
                 "180",
-                density.run { padding.sp.toPx().div(2) },
-                size.height.div(2) + density.run { textPaint.textSize.div(2) },
+                0 - density.run { padding.dp.div(2).toPx() } - density.run {
+                    textPaint.textSize.div(2)
+                },
+                size.height.div(2) + density.run { padding.div(2) },
                 textPaint,
             )
+        }
+
+        Spacer(modifier = Modifier.padding(8.dp))
+        val rectF = RectF()
+        val paint = remember {
+            Paint().apply {
+
+            }
+        }
+        Canvas(
+            modifier = Modifier
+                .width(width.dp)
+                .height(height.dp)
+                .background(Color(0xAACE6CA6))
+                .padding(padding.dp)
+        ) {
+            rectF.set(0f + 10, 0f + 10, size.width, size.height)
+            paint.color = Color(0xFF60fcdc).toArgb()
+            drawContext.canvas.nativeCanvas.drawArc(rectF, 0f, 90f, true, paint)
+            rectF.set(0f - 10, 0f + 10, size.width, size.height)
+            paint.color = Color(0xFFfa59fd).toArgb()
+            drawContext.canvas.nativeCanvas.drawArc(rectF, 90f, 90f, true, paint)
+            rectF.set(0f - 10, 0f - 10, size.width, size.height)
+            paint.color = Color(0xFFfc9a57).toArgb()
+            drawContext.canvas.nativeCanvas.drawArc(rectF, 180f, 90f, true, paint)
+            rectF.set(0f + 10, 0f - 10, size.width, size.height)
+            paint.color = Color(0xFFfef259).toArgb()
+            drawContext.canvas.nativeCanvas.drawArc(rectF, 270f, 90f, true, paint)
         }
     }
 }
@@ -183,7 +218,6 @@ fun ModifierDrawWithCache() {
     )
     // [END android_compose_graphics_modifiers_drawWithCache]
 }
-
 
 @Composable
 @Preview
@@ -270,7 +304,6 @@ fun DrawBezierCurves(height: Float = 80f, width: Float = 330f) {
     Spacer(modifier = Modifier.padding(8.dp))
 
 }
-
 
 @Composable
 private fun DrawOval2() {
