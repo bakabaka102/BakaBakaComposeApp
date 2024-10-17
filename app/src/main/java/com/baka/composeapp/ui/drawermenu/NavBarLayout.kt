@@ -38,7 +38,7 @@ fun NavBarHeader() {
                 .padding(top = 10.dp)
         )
         Text(
-            text = "Coding Meet",
+            text = "Baka baka",
             modifier = Modifier.padding(top = 10.dp)
         )
     }

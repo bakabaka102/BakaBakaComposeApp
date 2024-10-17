@@ -250,7 +250,7 @@ fun DrawWithContent(width: Float = 300f, height: Float = 300f) {
                 )
             }
     ) {
-        // Your composables here
+        // Your composable here
         Box(modifier = Modifier.size(width.dp)) {
             Text(
                 text = "This is a demo text, it is hidden by a dark color.",

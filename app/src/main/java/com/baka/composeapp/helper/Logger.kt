@@ -4,17 +4,11 @@ import android.util.Log
 
 object Logger {
 
-    private var productionTerminal = false
-
     private var DEBUG = true
-
     private const val TRACE_METHOD = "trace"
-
     private const val START_LOG_METHOD = "startLogMethod"
     private const val END_LOG_METHOD = "endLogMethod"
-
     private const val CLASS_NAME_INDEX = 0
-
     private const val METHOD_NAME_INDEX = 1
 
     /**
@@ -24,15 +18,6 @@ object Logger {
      */
     fun setDebugMode(debugMode: Boolean) {
         DEBUG = debugMode
-    }
-
-    /**
-     * set Production State for all module.
-     *
-     * @param productionTerminalState Boolean input value of productionTerminalState.
-     */
-    fun setProductionTerminal(productionTerminalState: Boolean) {
-        productionTerminal = productionTerminalState
     }
 
     /**
@@ -87,7 +72,7 @@ object Logger {
      * @param content The message you would like logged.
      */
     fun d(content: String) {
-        if (DEBUG && !productionTerminal) {
+        if (DEBUG) {
             val msg = trace()
             if (msg != null) {
                 d(
@@ -116,7 +101,7 @@ object Logger {
     }
 
     private fun d(tag: String, content: String) {
-        if (DEBUG && !productionTerminal) {
+        if (DEBUG) {
             Log.d(tag, content)
         }
     }

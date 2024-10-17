@@ -70,3 +70,12 @@ sealed class Screens(
     data object ProductDetailScreen :
         Screens(route = "product_detail_screen", title = "Product detail")
 }
+
+val drawerItems = listOf(
+    Screens.Home,
+    Screens.Profile,
+    Screens.Notification,
+    Screens.Setting,
+    Screens.ProductsScreen,
+    Screens.Share,
+)
