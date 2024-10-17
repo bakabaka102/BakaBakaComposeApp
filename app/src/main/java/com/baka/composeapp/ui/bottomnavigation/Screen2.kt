@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.baka.composeapp.ui.bottomnavigation.models.DataPoint
 import com.baka.composeapp.ui.models.GraphAppearance
 
 @Composable
@@ -105,8 +106,6 @@ fun Screen2() {
         }
     }
 }
-
-data class DataPoint(val value: Float, val color: Color)
 
 @Composable
 fun BarChart() {
