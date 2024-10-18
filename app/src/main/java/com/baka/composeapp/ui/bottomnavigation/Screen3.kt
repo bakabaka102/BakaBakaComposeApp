@@ -1,6 +1,5 @@
 package com.baka.composeapp.ui.bottomnavigation
 
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -10,7 +9,6 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -44,6 +42,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.unit.dp
 import com.baka.composeapp.ui.bottomnavigation.models.PointsData
@@ -59,7 +59,6 @@ fun Screen3() {
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        MovingCircles()
         Spacer(modifier = Modifier.padding(8.dp))
         Pendulum(pointsData = PointsData()) {
             Surface(
@@ -99,10 +98,10 @@ fun BouncingBallGame() {
             position.value += velocity.value
             // change > condition to size of screen,
             // here just using a static value for demo purposes
-            if (position.value.x + radiusBall.div(2) < 0f || position.value.x + radiusBall.div(2) > widthCanvas) {
+            if (position.value.x - radiusBall < 0f || position.value.x + radiusBall > widthCanvas) {
                 velocity.value = Offset(-velocity.value.x, velocity.value.y)
             }
-            if (position.value.y + radiusBall.div(2) < 0f || position.value.y + radiusBall.div(2) > heightCanvas) {
+            if (position.value.y < 0f || position.value.y + radiusBall > heightCanvas) {
                 velocity.value = Offset(velocity.value.x, -velocity.value.y)
             }
             delay(16L)
@@ -111,89 +110,46 @@ fun BouncingBallGame() {
 
     Column(
         modifier = Modifier.background(
-            brush = Brush.horizontalGradient(
-                listOf(
-                    Color.Red,
-                    Color.Blue
-                )
-            )
+            /*brush = Brush.horizontalGradient(listOf(Color.Red, Color.Blue))*/
+            color = Color(0xFFEEE8AF)
         )
     ) {
         Canvas(
             modifier = Modifier
-                .height(460.dp)
+                .height(300.dp)
                 .fillMaxWidth()
         ) {
+            Color(0xFF009688)
             heightCanvas = size.height
             widthCanvas = size.width
             drawCircle(
-                brush = Brush.horizontalGradient(listOf(Color.Blue, Color.Red)),
+                brush = Brush.horizontalGradient(listOf(Color.Magenta, Color(0xFF009688))),
                 center = position.value,
                 radius = radiusBall,
             )
         }
         HorizontalDivider(thickness = 5.dp, color = Color.Red)
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+        Button(
+            modifier = Modifier
+                /*.background(
+                    brush = Brush.horizontalGradient(
+                        listOf(
+                            Color.Blue,
+                            Color.Red
+                        )
+                    )
+                )*/
+                .align(alignment = Alignment.CenterHorizontally),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009688)),
+            onClick = {
+                val random = (-1..1).random()
+                if (random != 0) {
+                    velocity.value += Offset(random * 6f, random * 6f)
+                }
+            },
         ) {
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                onClick = {
-                    val random = (-1..1).random()
-                    if (random != 0) {
-                        velocity.value += Offset(random * 10f, random * 10f)
-                    }
-                },
-            ) {
-                Text(text = "Change Bounce")
-            }
-
-            Text(
-                text = "Velocity: ${velocity.value.x}, ${velocity.value.y}",
-                color = Color.White,
-            )
+            Text(text = "Velocity: ${velocity.value.x}, ${velocity.value.y}")
         }
-    }
-}
-
-////https://proandroiddev.com/exploring-canvas-in-jetpack-compose-crafting-graphics-animations-and-game-experiences-b0aa31160bff
-@Composable
-fun MovingCircles() {
-    val position = remember { Animatable(0f) }
-    LaunchedEffect(Unit) {
-        position.animateTo(
-            targetValue = 550f,
-            animationSpec = tween(durationMillis = 3000),
-        )
-    }
-
-    val yAxis = 500f
-    val radius = 50f
-
-    Canvas(
-        modifier = Modifier
-            .fillMaxSize()
-            .height(300.dp)
-            .background(Color(0xFFE692AE))
-    ) {
-        drawCircle(color = Color.Red, center = Offset(position.value, yAxis), radius = radius)
-        drawCircle(
-            color = Color.Blue,
-            center = Offset(position.value, yAxis.div(1.5f)),
-            radius = radius.div(1.6f),
-        )
-        drawCircle(
-            color = Color.Magenta,
-            center = Offset(position.value, yAxis.div(2f)),
-            radius = radius.div(3),
-        )
-        drawCircle(
-            color = Color.Yellow,
-            center = Offset(position.value, yAxis.div(3f)),
-            radius = radius.div(4),
-        )
     }
 }
 
@@ -252,7 +208,7 @@ fun Pendulum(
     modifier: Modifier = Modifier,
     bgColor: Color = Color.White,
     brushBoxColor: Brush = Brush.horizontalGradient(listOf(Color.Yellow, Color.Magenta)),
-    circleColor: Color = Color.Blue,
+    circleColor: Color = Color(0xFF7E06B1),
     eyeColor: Color = Color.White,
     pupilColor: Color = Color.Black,
     threadColor: Color = Color.Black,
@@ -269,9 +225,9 @@ fun Pendulum(
     val eyeSize by remember { mutableFloatStateOf(40f) }
     val pupilSize by remember { mutableFloatStateOf(16f) }
     val threadLength by remember { mutableFloatStateOf(500f) }
-    val boxSize by remember { mutableStateOf(Size(500f, 500f)) }
+    val boxSize by remember { mutableStateOf(Size(400f, 400f)) }
 
-    val animationDuration by remember { mutableIntStateOf(2000) }
+    val animationDuration by remember { mutableIntStateOf(1000) }
     val infiniteTransition = rememberInfiniteTransition("pendulum")
 
     val pupilsRotation by infiniteTransition.animateFloat(
@@ -348,6 +304,16 @@ fun Pendulum(
                 color = eyeColor,
                 center = Offset(rightEyeX, clockY),
                 radius = eyeSize
+            )
+            //Draw mouth
+            drawArc(
+                color = Color(0xFF350129),
+                startAngle = 45f,
+                sweepAngle = 90f,
+                topLeft = Offset(0.4f * width, clockY),
+                useCenter = false,
+                size = Size(2 * clockRadius / 3, 2 * clockRadius / 3),
+                style = Stroke(width = 8f, cap = StrokeCap.Round)
             )
 
             // Left pupil

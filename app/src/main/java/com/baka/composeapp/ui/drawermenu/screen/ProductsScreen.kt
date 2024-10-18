@@ -1,6 +1,5 @@
 package com.baka.composeapp.ui.drawermenu.screen
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.baka.composeapp.features.productlist.models.Product
-
+import com.baka.composeapp.helper.Logger
 
 @Composable
 private fun ItemRow(product: Product, onItemClick: (Product) -> Unit) {
@@ -132,7 +131,7 @@ fun ProductListPage(
         ) {
             items(productList) { product ->
                 ItemRow(product) {
-                    Log.d("Product", "Item click === $it")
+                    Logger.i("Product click === $it")
                     navController.navigate(Screens.ProductDetailScreen.route)
                     //NavigationGraph(navController = navController, innerPadding = innerPadding)
                 }
