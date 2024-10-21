@@ -8,8 +8,11 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,6 +46,9 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.baka.composeapp.features.animations.AmazingClock
+import com.baka.composeapp.features.animations.ParallelClockAnimation
+import com.baka.composeapp.features.animations.SingleClockAnimation
 import com.baka.composeapp.helper.Logger
 import com.baka.composeapp.ui.dialog.ConfirmDialog
 import com.baka.composeapp.ui.dialog.DialogInput
@@ -62,6 +68,8 @@ fun HomeScreen(innerPadding: PaddingValues) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.padding(8.dp))
+        SomeOfClock()
+        Spacer(modifier = Modifier.padding(8.dp))
         MovingCircles()
         Spacer(modifier = Modifier.padding(8.dp))
         SomeOfIcon()
@@ -72,18 +80,48 @@ fun HomeScreen(innerPadding: PaddingValues) {
 }
 
 @Composable
+fun SomeOfClock() {
+    val scrollState = rememberScrollState()
+    Row(modifier = Modifier.horizontalScroll(state = scrollState)) {
+        Spacer(modifier = Modifier.padding(8.dp))
+        AmazingClock()
+        Spacer(modifier = Modifier.padding(8.dp))
+        val size = 200.dp
+        Box(
+            modifier = Modifier
+                .size(size)
+                .background(Color.Black)
+        ) {
+            ParallelClockAnimation()
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        Box(
+            modifier = Modifier
+                .size(size)
+                .background(Color.Black)
+        ) {
+            SingleClockAnimation()
+        }
+    }
+}
+
+@Composable
 fun SomeOfIcon() {
-    //https://medium.com/falabellatechnology/jetpack-compose-canvas-8aee73eab393
-    InstagramIcon()
-    Spacer(modifier = Modifier.padding(8.dp))
-    FacebookIcon()
-    Spacer(modifier = Modifier.padding(8.dp))
-    MessengerIcon()
-    Spacer(modifier = Modifier.padding(8.dp))
-    GooglePhotosIcon()
-    Spacer(modifier = Modifier.padding(8.dp))
-    WeatherAppIcon()
-    Spacer(modifier = Modifier.padding(8.dp))
+    val scrollState = rememberScrollState()
+    Row(modifier = Modifier.horizontalScroll(state = scrollState)) {
+        //https://medium.com/falabellatechnology/jetpack-compose-canvas-8aee73eab393
+        Spacer(modifier = Modifier.padding(8.dp))
+        InstagramIcon()
+        Spacer(modifier = Modifier.padding(8.dp))
+        FacebookIcon()
+        Spacer(modifier = Modifier.padding(8.dp))
+        MessengerIcon()
+        Spacer(modifier = Modifier.padding(8.dp))
+        GooglePhotosIcon()
+        Spacer(modifier = Modifier.padding(8.dp))
+        WeatherAppIcon()
+        Spacer(modifier = Modifier.padding(8.dp))
+    }
 }
 
 @Composable
