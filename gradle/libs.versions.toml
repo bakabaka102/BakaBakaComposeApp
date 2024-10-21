@@ -13,6 +13,7 @@ composeNav = "2.7.1"
 navigationCompose = "2.8.3"
 liveDataCompose = "1.7.4"
 #material-icons-extended = "1.6.8"
+kotlinParcelize = "1.8.10"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,4 +41,5 @@ androidx-material-icons-extended = {  group = "androidx.compose.material", name 
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kt-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization_version" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlinParcelize"  }
 
