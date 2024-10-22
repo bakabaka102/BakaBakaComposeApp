@@ -147,7 +147,11 @@ fun AmazingClock(durationTime: Int = 10000) {
                 val start = Offset(size.width / 2, positionY - halfStroke)
                 val end = Offset(size.width / 2, positionY + halfStroke)
                 drawLine(
-                    color = Color.White,
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            Color.Red, Color.Yellow, Color.Green, Color.Blue, Color.Magenta,
+                        )
+                    ),
                     start = start,
                     end = end,
                     strokeWidth = strokeWidth,

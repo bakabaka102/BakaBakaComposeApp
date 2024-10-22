@@ -5,13 +5,13 @@ import android.graphics.RectF
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,6 +22,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,6 +36,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Fill
@@ -63,19 +65,8 @@ fun Screen1() {
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        DrawRectangle()
         Spacer(modifier = Modifier.padding(8.dp))
-        DrawCircle()
-        Spacer(modifier = Modifier.padding(8.dp))
-        DrawPackMan()
-        Spacer(modifier = Modifier.padding(8.dp))
-        DrawCircleBeveledEdge()
-        Spacer(modifier = Modifier.padding(8.dp))
-        DrawLine()
-        Spacer(modifier = Modifier.padding(8.dp))
-        DrawOval1()
-        Spacer(modifier = Modifier.padding(8.dp))
-        DrawOval2()
+        SomeOfShapes()
         //https://proandroiddev.com/line-chart-ui-with-jetpack-compose-a-simple-guide-f9b8b80efc83
         Spacer(modifier = Modifier.padding(8.dp))
         DrawLines()
@@ -91,6 +82,30 @@ fun Screen1() {
         Spacer(modifier = Modifier.padding(8.dp))
         ModifierDrawWithCache()
         Spacer(modifier = Modifier.padding(80.dp))
+    }
+}
+
+@Composable
+fun SomeOfShapes() {
+    val scrollState = rememberScrollState()
+    Row(modifier = Modifier.horizontalScroll(state = scrollState)) {
+        Spacer(modifier = Modifier.padding(8.dp))
+        DrawRectangle()
+        Spacer(modifier = Modifier.padding(8.dp))
+        DrawCircle()
+        Spacer(modifier = Modifier.padding(8.dp))
+        DrawPackMan()
+        Spacer(modifier = Modifier.padding(8.dp))
+        DrawCircleBeveledEdge()
+        Spacer(modifier = Modifier.padding(8.dp))
+        DrawLine()
+        Spacer(modifier = Modifier.padding(8.dp))
+        DrawOval1()
+        Spacer(modifier = Modifier.padding(8.dp))
+        DrawOval2()
+        Spacer(modifier = Modifier.padding(8.dp))
+        DrawMixedShaped()
+        Spacer(modifier = Modifier.padding(8.dp))
     }
 }
 
@@ -322,6 +337,41 @@ private fun DrawOval2() {
 }
 
 @Composable
+private fun DrawMixedShaped() {
+    Column(modifier = Modifier.size(200.dp)) {
+        val path = Path().apply {
+            moveTo(200f, 300f)
+            lineTo(266f, 266f)
+            lineTo(116f, 134f)
+            lineTo(54f, 6f)
+            close()
+        }
+        Canvas(
+            modifier = Modifier
+                .size(200.dp)
+                .background(Color(0xFFEFF3F1))
+                .padding(10.dp)
+        ) {
+            // Draw a rectangle
+            drawRect(color = Color(0xFFAA7800))
+            // Draw a circle
+            drawCircle(color = Color(0xFFAADD00), radius = 160f)
+            // Draw a custom path
+            drawPath(
+                path = path,
+                brush = Brush.horizontalGradient(
+                    listOf(
+                        Color.Blue,
+                        Color.Magenta
+                    )
+                ),
+                style = Stroke(width = 8f, cap = StrokeCap.Round)
+            )
+        }
+    }
+}
+
+@Composable
 private fun DrawOval1() {
     Surface(onClick = { /*TODO*/ }) {
         Canvas(modifier = Modifier
@@ -341,8 +391,7 @@ private fun DrawLine() {
     Surface(onClick = { /*TODO*/ }) {
         val colorPaint = Color(0xFFBA6688)
         Canvas(modifier = Modifier
-            .fillMaxWidth(0.5f)
-            .height(100.dp)
+            .size(200.dp)
             .padding(16.dp), onDraw = {
             drawLine(
                 color = colorPaint,
@@ -416,7 +465,7 @@ private fun DrawRectangle() {
         ) {
             drawRect(
                 topLeft = Offset(50f, 50f),
-                /*size = Size(300f, 300f),*/
+                size = Size(200f, 100f),
                 color = Color.Red,
                 alpha = 1f,
                 style = Fill,
@@ -428,48 +477,6 @@ private fun DrawRectangle() {
 @Composable
 private fun DrawLines() {
     val list: List<Float> = listOf(5f, 6f, 3f, 1f, 2f, 4f, 3f)
-    Column(modifier = Modifier.size(300.dp)) {
-        /*val linePoints = listOf(
-                Pair(300f, 600f), Pair(400f, 400f),
-                Pair(175f, 200f), Pair(80f, 10f)
-            )*/
-        /*val path = Path().apply {
-            moveTo(50f, 50f)
-            lineTo(300f, 600f)
-            lineTo(550f, 50f)
-            close()
-        }*/
-        val path = Path().apply {
-            moveTo(300f, 600f)
-            lineTo(400f, 400f)
-            lineTo(175f, 200f)
-            lineTo(80f, 10f)
-            close()
-        }
-        Canvas(
-            modifier = Modifier
-                .size(300.dp)
-                .background(Color(0xFFEFF3F1))
-                .padding(10.dp)
-        ) {
-            // Draw a rectangle
-            drawRect(color = Color(0xFFAA7800))
-            // Draw a circle
-            drawCircle(color = Color(0xFFAADD00), radius = 200f)
-            // Draw a custom path
-            drawPath(
-                path = path,
-                brush = Brush.horizontalGradient(
-                    listOf(
-                        Color.Blue,
-                        Color.Magenta
-                    )
-                ),
-                style = Stroke(width = 8f, cap = StrokeCap.Round)
-            )
-        }
-    }
-
     Spacer(modifier = Modifier.padding(8.dp))
     Column(
         modifier = Modifier
@@ -491,30 +498,56 @@ private fun DrawLines() {
                     textSize = density.run { 12.sp.toPx() }
                 }
             }
+            var mWidth by remember {
+                mutableFloatStateOf(0f)
+            }
+            var mHeight by remember {
+                mutableFloatStateOf(0f)
+            }
+            // Measure the height of the text
+            val textPaintHeight by remember {
+                mutableFloatStateOf(textPaint.descent() - textPaint.ascent()).also {
+                    Logger.i("Text paint --- $it")
+                }
+            }
+
             Canvas(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(1f),
+                    .weight(1f)
+                    .padding(16.dp),
                 onDraw = {
-                    val yAxisSpace = size.height / list.size
+                    mWidth = this.size.width
+                    mHeight = this.size.height
+                    val yAxisSpace = mHeight / 5
                     val paddingSpace = 16
+                    val spaceWithText = 10f
+
                     for (i in 0 until 5) {
                         drawContext.canvas.nativeCanvas.drawText(
                             "$i",
                             paddingSpace.dp.toPx() / 2f,
-                            size.height - yAxisSpace * (i + 1),
-                            textPaint
+                            mHeight - yAxisSpace * i,
+                            textPaint,
                         )
                         drawLine(
                             color = Color(0xFF91085B),
-                            start = Offset(0f, size.height - paddingSpace),
-                            end = Offset(
-                                0f,
-                                size.height - (yAxisSpace * (i + 1))
+                            start = Offset(
+                                0f + paddingSpace + spaceWithText,
+                                (mHeight - yAxisSpace * i) - (textPaintHeight / 2)
                             ),
-                            strokeWidth = 24f,
-                            cap = StrokeCap.Round
+                            end = Offset(
+                                mWidth - paddingSpace,
+                                (mHeight - yAxisSpace * i) - (textPaintHeight / 2)
+                            ),
+                            strokeWidth = 2f,
+                            pathEffect = PathEffect.dashPathEffect(
+                                intervals = floatArrayOf(10f, 4f),
+                                phase = 0f,
+                            ),
+                            cap = StrokeCap.Round,
                         )
+
                     }
 
                 })
