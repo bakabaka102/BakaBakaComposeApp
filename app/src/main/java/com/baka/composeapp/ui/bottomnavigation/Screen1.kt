@@ -277,7 +277,7 @@ fun DrawWithContent(width: Float = 300f, height: Float = 300f) {
 }
 
 @Composable
-fun DrawBezierCurves(height: Float = 80f, width: Float = 330f) {
+fun DrawBezierCurves(height: Float = 80f, width: Float = 300f) {
     //https://stackoverflow.com/questions/76148870/how-to-draw-or-create-this-curve-shape-in-jetpack-compose
     Spacer(modifier = Modifier
         .height(height.dp)
@@ -316,7 +316,7 @@ fun DrawBezierCurves(height: Float = 80f, width: Float = 330f) {
         })
 
     //https://viblo.asia/p/cai-tien-bottomnavigationview-trong-android-gGJ59bLrKX2
-    Spacer(modifier = Modifier.padding(8.dp))
+    //Spacer(modifier = Modifier.padding(8.dp))
 
 }
 
@@ -477,7 +477,6 @@ private fun DrawRectangle() {
 @Composable
 private fun DrawLines() {
     val list: List<Float> = listOf(5f, 6f, 3f, 1f, 2f, 4f, 3f)
-    Spacer(modifier = Modifier.padding(8.dp))
     Column(
         modifier = Modifier
             .size(300.dp)
@@ -495,7 +494,7 @@ private fun DrawLines() {
                 Paint().apply {
                     color = Color(0xFF91085B).toArgb()
                     textAlign = Paint.Align.CENTER
-                    textSize = density.run { 12.sp.toPx() }
+                    textSize = density.run { 16.sp.toPx() }
                 }
             }
             var mWidth by remember {
@@ -521,7 +520,7 @@ private fun DrawLines() {
                     mHeight = this.size.height
                     val yAxisSpace = mHeight / 5
                     val paddingSpace = 16
-                    val spaceWithText = 10f
+                    val spaceWithText = 10
 
                     for (i in 0 until 5) {
                         drawContext.canvas.nativeCanvas.drawText(
@@ -533,7 +532,7 @@ private fun DrawLines() {
                         drawLine(
                             color = Color(0xFF91085B),
                             start = Offset(
-                                0f + paddingSpace + spaceWithText,
+                                0f + (paddingSpace.dp.toPx() / 2f) + spaceWithText.dp.toPx(),
                                 (mHeight - yAxisSpace * i) - (textPaintHeight / 2)
                             ),
                             end = Offset(
@@ -542,7 +541,7 @@ private fun DrawLines() {
                             ),
                             strokeWidth = 2f,
                             pathEffect = PathEffect.dashPathEffect(
-                                intervals = floatArrayOf(10f, 4f),
+                                intervals = floatArrayOf(16f, 4f),
                                 phase = 0f,
                             ),
                             cap = StrokeCap.Round,
@@ -559,13 +558,12 @@ private fun DrawLines() {
 private fun SinCosPath() {
     Canvas(modifier = Modifier
         .size(300.dp)
-        .padding(16.dp)
         .background(Color.White),
         onDraw = {
             val middleW = size.width / 2
             val middleH = size.height / 2
-            drawLine(Color.Gray, Offset(0f, middleH), Offset(size.width - 1, middleH))
-            drawLine(Color.Gray, Offset(middleW, 0f), Offset(middleW, size.height - 1))
+            drawLine(Color.Red, Offset(0f, middleH), Offset(size.width - 1, middleH))
+            drawLine(Color.Magenta, Offset(middleW, 0f), Offset(middleW, size.height - 1))
             val points = mutableListOf<Offset>()
             for (x in 0 until size.width.toInt()) {
                 val y = (sin(x * (2f * PI / size.width)) * middleH + middleH).toFloat()
@@ -579,6 +577,7 @@ private fun SinCosPath() {
             )
         }
     )
+    Spacer(modifier = Modifier.padding(8.dp))
     Spacer(
         modifier = Modifier
             .height(80.dp)
