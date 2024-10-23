@@ -17,11 +17,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,15 +29,8 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.PointMode
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
@@ -52,9 +43,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baka.composeapp.features.charts.lines.DrawBezierCurves
 import com.baka.composeapp.features.charts.lines.SinCosPath
-import com.baka.composeapp.helper.Logger
-import kotlin.math.PI
-import kotlin.math.sin
+import com.baka.composeapp.features.charts.shapes.DrawCircle
+import com.baka.composeapp.features.charts.shapes.DrawCircleBeveledEdge
+import com.baka.composeapp.features.charts.shapes.DrawLine
+import com.baka.composeapp.features.charts.shapes.DrawMixedShaped
+import com.baka.composeapp.features.charts.shapes.DrawOval1
+import com.baka.composeapp.features.charts.shapes.DrawOval2
+import com.baka.composeapp.features.charts.shapes.DrawPackMan
+import com.baka.composeapp.features.charts.shapes.DrawRectangle
 
 @Composable
 fun Screen1() {
@@ -78,7 +74,7 @@ fun Screen1() {
         Spacer(modifier = Modifier.padding(8.dp))
         DrawWithContent()
         Spacer(modifier = Modifier.padding(8.dp))
-        ModifierDrawWithCache()
+        DrawBackgroundOfText()
         Spacer(modifier = Modifier.padding(80.dp))
     }
 }
@@ -205,7 +201,7 @@ fun DrawSpiltFourCircle(width: Float = 300f, height: Float = 300f) {
 
 @Composable
 @Preview
-fun ModifierDrawWithCache() {
+fun DrawBackgroundOfText() {
     //https://developer.android.com/develop/ui/compose/graphics/draw/modifiers
     // [START android_compose_graphics_modifiers_drawWithCache]
     Text(
@@ -272,159 +268,4 @@ fun DrawWithContent(width: Float = 300f, height: Float = 300f) {
         }
     }
     // [END android_compose_graphics_modifiers_drawWithContent]
-}
-
-
-@Composable
-private fun DrawOval2() {
-    Surface(onClick = { /*TODO*/ }) {
-        val colorPaint = Color(0xFFBA1122)
-        Canvas(modifier = Modifier
-            .size(200.dp)
-            .padding(16.dp), onDraw = {
-            drawOval(
-                color = colorPaint,
-                topLeft = Offset.Zero,
-                size = Size(size.width - 10f, size.height - 80f)
-            )
-        })
-    }
-}
-
-@Composable
-private fun DrawMixedShaped() {
-    Column(modifier = Modifier.size(200.dp)) {
-        val path = Path().apply {
-            moveTo(200f, 300f)
-            lineTo(266f, 266f)
-            lineTo(116f, 134f)
-            lineTo(54f, 6f)
-            close()
-        }
-        Canvas(
-            modifier = Modifier
-                .size(200.dp)
-                .background(Color(0xFFEFF3F1))
-                .padding(10.dp)
-        ) {
-            // Draw a rectangle
-            drawRect(color = Color(0xFFAA7800))
-            // Draw a circle
-            drawCircle(color = Color(0xFFAADD00), radius = 160f)
-            // Draw a custom path
-            drawPath(
-                path = path,
-                brush = Brush.horizontalGradient(
-                    listOf(
-                        Color.Blue,
-                        Color.Magenta
-                    )
-                ),
-                style = Stroke(width = 8f, cap = StrokeCap.Round)
-            )
-        }
-    }
-}
-
-@Composable
-private fun DrawOval1() {
-    Surface(onClick = { /*TODO*/ }) {
-        Canvas(modifier = Modifier
-            .size(200.dp)
-            .padding(16.dp), onDraw = {
-            drawOval(
-                brush = Brush.linearGradient(listOf(Color.Red, Color.Blue)),
-                topLeft = Offset(10f, 10f),
-                size = Size(size.width - 10f, size.height - 10f)
-            )
-        })
-    }
-}
-
-@Composable
-private fun DrawLine() {
-    Surface(onClick = { /*TODO*/ }) {
-        val colorPaint = Color(0xFFBA6688)
-        Canvas(modifier = Modifier
-            .size(200.dp)
-            .padding(16.dp), onDraw = {
-            drawLine(
-                color = colorPaint,
-                start = Offset.Zero,
-                end = Offset(200f, 50f),
-                strokeWidth = 24f,
-                cap = StrokeCap.Round
-            )
-        })
-    }
-}
-
-@Composable
-private fun DrawCircleBeveledEdge() {
-    Surface(
-        onClick = { /*TODO*/ },
-    ) {
-        val paintColor = Color(0xFF460252)
-        Canvas(modifier = Modifier
-            .size(200.dp)
-            .padding(16.dp), onDraw = {
-            drawArc(paintColor, 0f, 270f, false)
-        })
-    }
-}
-
-@Composable
-private fun DrawPackMan() {
-    Surface(
-        onClick = { /*TODO*/ },
-        /* modifier = Modifier
-                 .fillMaxWidth()
-                 .fillMaxHeight()
-                 .background(Color.LightGray)*/
-    ) {
-        val paintColor = Color(0xFFBA68C8)
-        Canvas(modifier = Modifier
-            .size(200.dp)
-            .padding(16.dp), onDraw = {
-            drawArc(paintColor, 30f, 270f, true)
-        })
-    }
-}
-
-@Composable
-private fun DrawCircle() {
-    Surface(
-        onClick = { /*TODO*/ },
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Canvas(modifier = Modifier
-            .size(200.dp)
-            .padding(24.dp), onDraw = {
-            drawCircle(Color(0xFFAAFF00))
-        })
-    }
-}
-
-@Composable
-private fun DrawRectangle() {
-    Surface(
-        onClick = { /*TODO*/ },
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Canvas(
-            modifier = Modifier
-                .size(200.dp)
-                .padding(24.dp)
-        ) {
-            drawRect(
-                topLeft = Offset(50f, 50f),
-                size = Size(200f, 100f),
-                color = Color.Red,
-                alpha = 1f,
-                style = Fill,
-            )
-        }
-    }
 }
