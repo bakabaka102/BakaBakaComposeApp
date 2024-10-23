@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -51,6 +50,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.baka.composeapp.features.charts.lines.DrawBezierCurves
+import com.baka.composeapp.features.charts.lines.SinCosPath
 import com.baka.composeapp.helper.Logger
 import kotlin.math.PI
 import kotlin.math.sin
@@ -67,9 +68,6 @@ fun Screen1() {
     ) {
         Spacer(modifier = Modifier.padding(8.dp))
         SomeOfShapes()
-        //https://proandroiddev.com/line-chart-ui-with-jetpack-compose-a-simple-guide-f9b8b80efc83
-        Spacer(modifier = Modifier.padding(8.dp))
-        DrawLines()
         //https://dev.to/tkuenneth/drawing-and-painting-in-jetpack-compose-1-2okl
         Spacer(modifier = Modifier.padding(8.dp))
         SinCosPath()
@@ -244,9 +242,9 @@ fun DrawWithContent(width: Float = 300f, height: Float = 300f) {
     }
     Column(
         modifier = Modifier
-            .size(width.dp)
+            .size(width.dp, height.dp)
             .pointerInput("dragging") {
-                detectDragGestures { change, dragAmount ->
+                detectDragGestures { _, dragAmount ->
                     pointerOffset += dragAmount
                 }
             }
@@ -276,49 +274,6 @@ fun DrawWithContent(width: Float = 300f, height: Float = 300f) {
     // [END android_compose_graphics_modifiers_drawWithContent]
 }
 
-@Composable
-fun DrawBezierCurves(height: Float = 80f, width: Float = 300f) {
-    //https://stackoverflow.com/questions/76148870/how-to-draw-or-create-this-curve-shape-in-jetpack-compose
-    Spacer(modifier = Modifier
-        .height(height.dp)
-        .width(width.dp)
-        .background(Color.White)
-        .drawWithCache {
-            onDrawBehind {
-                val path = Path().apply {
-                    moveTo(0f, 0f)
-                    cubicTo(
-                        x1 = width.dp.toPx() / 10,
-                        y1 = 0f,
-                        x2 = width.dp.toPx() / 4,
-                        y2 = (height - 10).dp.toPx(),
-                        x3 = width.dp.toPx() / 2,
-                        y3 = 70.dp.toPx()
-                    )
-                    cubicTo(
-                        x1 = width.dp.toPx() * 3 / 4,
-                        y1 = (height - 10).dp.toPx(),
-                        x2 = width.dp.toPx() - width.dp.toPx() / 10,
-                        y2 = 0f,
-                        x3 = width.dp.toPx(),
-                        y3 = 0f
-                    )
-                }
-                path.close()
-                drawPath(
-                    path = path,
-                    /*color = Color.Blue,*/
-                    brush = Brush.verticalGradient(listOf(Color.Blue, Color.Transparent)),
-                    /*style = Stroke(width = 6f, cap = StrokeCap.Round),*/
-                    style = Fill,
-                )
-            }
-        })
-
-    //https://viblo.asia/p/cai-tien-bottomnavigationview-trong-android-gGJ59bLrKX2
-    //Spacer(modifier = Modifier.padding(8.dp))
-
-}
 
 @Composable
 private fun DrawOval2() {
@@ -472,132 +427,4 @@ private fun DrawRectangle() {
             )
         }
     }
-}
-
-@Composable
-private fun DrawLines() {
-    val list: List<Float> = listOf(5f, 6f, 3f, 1f, 2f, 4f, 3f)
-    Column(
-        modifier = Modifier
-            .size(300.dp)
-            .background(Color.White),
-    ) {
-        val zipList: List<Pair<Float, Float>> = list.zipWithNext().also {
-            Logger.d("Value of list point: $it")
-        }
-
-        Row {
-            val max = list.max()
-            val min = list.min()
-            val density = LocalDensity.current
-            val textPaint = remember(density) {
-                Paint().apply {
-                    color = Color(0xFF91085B).toArgb()
-                    textAlign = Paint.Align.CENTER
-                    textSize = density.run { 16.sp.toPx() }
-                }
-            }
-            var mWidth by remember {
-                mutableFloatStateOf(0f)
-            }
-            var mHeight by remember {
-                mutableFloatStateOf(0f)
-            }
-            // Measure the height of the text
-            val textPaintHeight by remember {
-                mutableFloatStateOf(textPaint.descent() - textPaint.ascent()).also {
-                    Logger.i("Text paint --- $it")
-                }
-            }
-
-            Canvas(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f)
-                    .padding(16.dp),
-                onDraw = {
-                    mWidth = this.size.width
-                    mHeight = this.size.height
-                    val yAxisSpace = mHeight / 5
-                    val paddingSpace = 16
-                    val spaceWithText = 10
-
-                    for (i in 0 until 5) {
-                        drawContext.canvas.nativeCanvas.drawText(
-                            "$i",
-                            paddingSpace.dp.toPx() / 2f,
-                            mHeight - yAxisSpace * i,
-                            textPaint,
-                        )
-                        drawLine(
-                            color = Color(0xFF91085B),
-                            start = Offset(
-                                0f + (paddingSpace.dp.toPx() / 2f) + spaceWithText.dp.toPx(),
-                                (mHeight - yAxisSpace * i) - (textPaintHeight / 2)
-                            ),
-                            end = Offset(
-                                mWidth - paddingSpace,
-                                (mHeight - yAxisSpace * i) - (textPaintHeight / 2)
-                            ),
-                            strokeWidth = 2f,
-                            pathEffect = PathEffect.dashPathEffect(
-                                intervals = floatArrayOf(16f, 4f),
-                                phase = 0f,
-                            ),
-                            cap = StrokeCap.Round,
-                        )
-
-                    }
-
-                })
-        }
-    }
-}
-
-@Composable
-private fun SinCosPath() {
-    Canvas(modifier = Modifier
-        .size(300.dp)
-        .background(Color.White),
-        onDraw = {
-            val middleW = size.width / 2
-            val middleH = size.height / 2
-            drawLine(Color.Red, Offset(0f, middleH), Offset(size.width - 1, middleH))
-            drawLine(Color.Magenta, Offset(middleW, 0f), Offset(middleW, size.height - 1))
-            val points = mutableListOf<Offset>()
-            for (x in 0 until size.width.toInt()) {
-                val y = (sin(x * (2f * PI / size.width)) * middleH + middleH).toFloat()
-                points.add(Offset(x.toFloat(), y))
-            }
-            drawPoints(
-                points = points,
-                strokeWidth = 4f,
-                pointMode = PointMode.Points,
-                color = Color.Blue
-            )
-        }
-    )
-    Spacer(modifier = Modifier.padding(8.dp))
-    Spacer(
-        modifier = Modifier
-            .height(80.dp)
-            .width(300.dp)
-            .background(Color.White)
-            .drawWithCache {
-                onDrawBehind {
-                    drawLine(
-                        color = Color.Black, start = Offset(0f, 0f),
-                        end = Offset(size.width - 1, size.height - 1)
-                    )
-                    drawLine(
-                        Color.Black, Offset(0f, size.height - 1),
-                        Offset(size.width - 1, 0f)
-                    )
-                    drawCircle(
-                        Color.Red, 64f,
-                        Offset(size.width / 2, size.height / 2)
-                    )
-                }
-            }
-    )
 }
