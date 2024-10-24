@@ -2,6 +2,7 @@ package com.baka.composeapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.DrawerValue
@@ -17,6 +18,7 @@ import com.baka.composeapp.ui.drawermenu.DrawerContent
 import com.baka.composeapp.ui.drawermenu.screen.Screens
 import com.baka.composeapp.ui.drawermenu.screen.drawerItems
 import com.baka.composeapp.ui.theme.BakaBakaComposeAppTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -56,6 +58,9 @@ class MainActivity : ComponentActivity() {
                     },
                 ) {
                     ContentOfScreen(topBarTitle, scope, drawerState, navController)
+                }
+                BackHandler(enabled = drawerState.isOpen) {
+                    scope.launch { drawerState.close() }
                 }
             }
         }

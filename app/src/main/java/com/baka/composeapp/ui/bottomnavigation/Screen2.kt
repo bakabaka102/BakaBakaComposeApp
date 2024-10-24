@@ -17,14 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.baka.composeapp.features.charts.barschart.BarChart
-import com.baka.composeapp.features.charts.columns.ColumnsChart
 import com.baka.composeapp.features.charts.lines.LineChart
 import com.baka.composeapp.ui.models.GraphAppearance
 
 @Composable
 fun Screen2() {
 //https://proandroiddev.com/exploring-canvas-in-jetpack-compose-crafting-graphics-animations-and-game-experiences-b0aa31160bff
-//https://proandroiddev.com/creating-graph-in-jetpack-compose-312957b11b2
 
     val scrollState = rememberScrollState()
     Column(
@@ -36,8 +34,6 @@ fun Screen2() {
     ) {
         BarChart()
         //https://proandroiddev.com/line-chart-ui-with-jetpack-compose-a-simple-guide-f9b8b80efc83
-        Spacer(modifier = Modifier.padding(8.dp))
-        ColumnsChart()
         Spacer(modifier = Modifier.padding(8.dp))
         Column(
             modifier = Modifier
@@ -54,19 +50,19 @@ fun Screen2() {
                 num.toFloat()
             }*/
             /* to test with fixed points */
-            val points = listOf(150f, 100f, 250f, 200f, 330f, 300f, 90f, 120f, 285f, 199f)
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.DarkGray)
             ) {
+                //https://proandroiddev.com/creating-graph-in-jetpack-compose-312957b11b2
                 LineChart(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(500.dp),
                     xValues = (0..9).map { it + 1 },
                     yValues = (0..6).map { (it + 1) * yStep },
-                    points = points,
                     paddingSpace = 16.dp,
                     verticalStep = yStep,
                     graphAppearance = GraphAppearance(

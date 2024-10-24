@@ -32,7 +32,7 @@ fun LineChart(
     modifier: Modifier,
     xValues: List<Int>,
     yValues: List<Int>,
-    points: List<Float>,
+    points: List<Float> = listOf(150f, 100f, 250f, 200f, 330f, 300f, 90f, 120f, 285f, 199f),
     paddingSpace: Dp,
     verticalStep: Int,
     graphAppearance: GraphAppearance,

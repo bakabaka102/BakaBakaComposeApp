@@ -1,8 +1,5 @@
 package com.baka.composeapp.ui.bottomnavigation
 
-import android.graphics.Paint
-import android.graphics.RectF
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.horizontalScroll
@@ -11,10 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -31,16 +26,18 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.baka.composeapp.features.charts.icons.FacebookIcon
+import com.baka.composeapp.features.charts.icons.GooglePhotosIcon
+import com.baka.composeapp.features.charts.icons.InstagramIcon
+import com.baka.composeapp.features.charts.icons.MessengerIcon
+import com.baka.composeapp.features.charts.icons.WeatherAppIcon
 import com.baka.composeapp.features.charts.lines.DrawBezierCurves
 import com.baka.composeapp.features.charts.lines.SinCosPath
 import com.baka.composeapp.features.charts.shapes.DrawCircle
@@ -66,9 +63,9 @@ fun Screen1() {
         SomeOfShapes()
         //https://dev.to/tkuenneth/drawing-and-painting-in-jetpack-compose-1-2okl
         Spacer(modifier = Modifier.padding(8.dp))
-        SinCosPath()
+        SomeOfIcon()
         Spacer(modifier = Modifier.padding(8.dp))
-        DrawSpiltFourCircle()
+        SinCosPath()
         Spacer(modifier = Modifier.padding(8.dp))
         DrawBezierCurves()
         Spacer(modifier = Modifier.padding(8.dp))
@@ -104,98 +101,21 @@ fun SomeOfShapes() {
 }
 
 @Composable
-fun DrawSpiltFourCircle(width: Float = 300f, height: Float = 300f) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        val padding = 48f
-        val density = LocalDensity.current
-        val textPaint = remember(density) {
-            Paint().apply {
-                /*color = android.graphics.Color.BLACK*/
-                color = Color(0xFF91085B).toArgb()
-                textAlign = Paint.Align.CENTER
-                textSize = density.run { 20.sp.toPx() }
-                strokeWidth = density.run { 4.sp.toPx() }
-                isAntiAlias = true
-            }
-        }
-        Canvas(
-            modifier = Modifier
-                .width(width.dp)
-                .height(height.dp)
-                .background(Color(0xFFC2A7F3))
-                .padding(padding.dp)
-        ) {
-            drawArc(
-                Color(color = 0xFFfa59fd),
-                startAngle = 0f,
-                sweepAngle = -90f,
-                useCenter = true,
-            )
-            drawContext.canvas.nativeCanvas.drawText(
-                "0",
-                size.width + density.run { padding.dp.div(2).toPx() },
-                size.height.div(2) + density.run { padding.div(2) },
-                textPaint,
-            )
-            drawArc(Color(0xFF60fcdc), 0f, 90f, true)
-            drawContext.canvas.nativeCanvas.drawText(
-                "270",
-                0 + size.width.div(2),
-                0f - density.run { padding.div(2) },
-                textPaint,
-            )
-            drawArc(Color(0xFFfc9a57), 90f, 90f, true)
-            drawContext.canvas.nativeCanvas.drawText(
-                "90",
-                0 + size.width.div(2),
-                size.height + density.run { textPaint.textSize.div(2) } + density.run {
-                    padding.dp.div(2).toPx()
-                },
-                textPaint,
-            )
-            drawArc(Color(0xFFfef259), -90f, -90f, true)
-            drawContext.canvas.nativeCanvas.drawText(
-                "180",
-                0 - density.run { padding.dp.div(2).toPx() } - density.run {
-                    textPaint.textSize.div(2)
-                },
-                size.height.div(2) + density.run { padding.div(2) },
-                textPaint,
-            )
-        }
-
+fun SomeOfIcon() {
+    val scrollState = rememberScrollState()
+    Row(modifier = Modifier.horizontalScroll(state = scrollState)) {
+        //https://medium.com/falabellatechnology/jetpack-compose-canvas-8aee73eab393
         Spacer(modifier = Modifier.padding(8.dp))
-        val rectF = RectF()
-        val paint = remember {
-            Paint().apply {
-
-            }
-        }
-        Canvas(
-            modifier = Modifier
-                .width(width.dp)
-                .height(height.dp)
-                .background(Color(0xAACE6CA6))
-                .padding(padding.dp)
-        ) {
-            rectF.set(0f + 10, 0f + 10, size.width, size.height)
-            paint.color = Color(0xFF60fcdc).toArgb()
-            drawContext.canvas.nativeCanvas.drawArc(rectF, 0f, 90f, true, paint)
-            rectF.set(0f - 10, 0f + 10, size.width, size.height)
-            paint.color = Color(0xFFfa59fd).toArgb()
-            drawContext.canvas.nativeCanvas.drawArc(rectF, 90f, 90f, true, paint)
-            rectF.set(0f - 10, 0f - 10, size.width, size.height)
-            paint.color = Color(0xFFfc9a57).toArgb()
-            drawContext.canvas.nativeCanvas.drawArc(rectF, 180f, 90f, true, paint)
-            rectF.set(0f + 10, 0f - 10, size.width, size.height)
-            paint.color = Color(0xFFfef259).toArgb()
-            drawContext.canvas.nativeCanvas.drawArc(rectF, 270f, 90f, true, paint)
-        }
+        InstagramIcon()
+        Spacer(modifier = Modifier.padding(8.dp))
+        FacebookIcon()
+        Spacer(modifier = Modifier.padding(8.dp))
+        MessengerIcon()
+        Spacer(modifier = Modifier.padding(8.dp))
+        GooglePhotosIcon()
+        Spacer(modifier = Modifier.padding(8.dp))
+        WeatherAppIcon()
+        Spacer(modifier = Modifier.padding(8.dp))
     }
 }
 

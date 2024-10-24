@@ -31,7 +31,7 @@ fun NavBarHeader() {
     ) {
 
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            painter = painterResource(id = R.drawable.bakabaka_ic_launcher),
             contentDescription = "logo",
             modifier = Modifier
                 .size(100.dp)

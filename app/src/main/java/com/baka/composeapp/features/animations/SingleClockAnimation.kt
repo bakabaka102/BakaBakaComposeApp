@@ -14,10 +14,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -38,21 +36,6 @@ import com.baka.composeapp.ui.theme.BakaBakaComposeAppTheme
 
 
 //https://github.com/Kpeved/ClockProgressAnimation/blob/main/app/src/main/java/com/kpeved/circleAnimation/SingleClockAnimation.kt
-@Preview(showBackground = true)
-@Composable
-fun SingleClockPreview() {
-    BakaBakaComposeAppTheme {
-        val size = 200.dp
-        Box(
-            modifier = Modifier
-                .width(size)
-                .height(size)
-                .background(Color.Black)
-        ) {
-            SingleClockAnimation(duration = 10000)
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
@@ -101,7 +84,6 @@ fun SingleClockAnimation(duration: Int = 6000) {
     SingleClockAnimationProgress(clockAnimation)
 }
 
-
 @Composable
 fun SingleClockAnimationProgress(animationAngle: Float) {
     val hours: List<Int> = remember { List(12) { it } }
@@ -139,7 +121,7 @@ fun SingleClockAnimationProgress(animationAngle: Float) {
 
     //Step 2 -  create a spacer for animation
     Spacer(modifier = Modifier
-        .fillMaxSize()
+        .fillMaxSize().padding(16.dp)
         .onGloballyPositioned {
             strokeWidth = (it.size.width / 24).toFloat()
         }

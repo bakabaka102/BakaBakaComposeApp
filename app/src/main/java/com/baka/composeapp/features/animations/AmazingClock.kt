@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -162,16 +161,16 @@ fun AmazingClock(durationTime: Int = 10000) {
         hours.forEach { hour ->
             if (dotsVisible[hour].not()) return@forEach
             val degree = hour * 30f.also {
-                Logger.i("Degree --- $it")
+                //Logger.i("Degree --- $it")
             }
             rotate(degree) {
                 val positionY = halfStroke +
                         stepHeight * hour * (1 - disassembleAnimations[hour].value)
                 val start = Offset(mWidth / 2, positionY /*- halfStroke*/).also {
-                    Logger.i("Start point --- $it")
+                    //Logger.i("Start point --- $it")
                 }
                 val end = Offset(mWidth / 2, positionY /*+ halfStroke*/).also {
-                    Logger.i("End point --- $it")
+                    //Logger.i("End point --- $it")
                 }
                 drawLine(
                     /*color = Color.White,*/
