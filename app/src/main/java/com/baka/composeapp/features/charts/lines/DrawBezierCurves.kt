@@ -24,7 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.asAndroidPath
+import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
@@ -141,7 +144,7 @@ fun BezierCurve(
                 Logger.i("Text paint --- $it")
             }
         }
-
+        val linePath = Path()
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
@@ -182,6 +185,8 @@ fun BezierCurve(
                 val barHeight = ((yValue / maxY) * mHeight).also {
                     Logger.i("yValue == $yValue ---maxY == $maxY--- mHeight == $mHeight -- Height of point $it")
                 }
+                val xPointOfCircle = xPointOfText - radiusCirclePoint / 2
+                val yPointOfCircle = radiusCirclePoint + mHeight - (barHeight * 4 / 5)
                 /*val barHeight = (dataPoint.value / maxBarValue) * maxBarHeight
                 val barHeight = (yValue / maxY) * mHeight * 4 / 5
                 */
@@ -196,15 +201,71 @@ fun BezierCurve(
                 drawCircle(
                     color = Color.Yellow,
                     radius = radiusCirclePoint,
-                    center = Offset(
-                        xPointOfText - radiusCirclePoint / 2,
-                        radiusCirclePoint + mHeight - (barHeight * 4 / 5)
-                    )
-                    /*topLeft = Offset(xPointOfText - barWidth / 2, mHeight - barHeight),
-                    size = Size(barWidth, barHeight),
-                    cornerRadius = CornerRadius(x = 8f, y = 8f),*/
+                    center = Offset(xPointOfCircle, yPointOfCircle)
                 )
+                //Prepare Line points
+                if (index == 0) {
+                    linePath.moveTo(xPointOfCircle, yPointOfCircle)
+                } else {
+                    //Line normal
+                    /*linePath.lineTo(xPointOfCircle, yPointOfCircle)*/
+                    //Other: Count points use cubicTo to draw a curve line
+                    //https://medium.com/@kezhang404/either-compose-is-elegant-or-if-you-want-to-draw-something-with-an-android-view-you-have-to-7ce00dc7cc1
+                    /*val firstControlPoint = Offset(
+                        x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
+                        y = startPoint.y,
+                    )
+                    val secondControlPoint = Offset(
+                        x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
+                        y = endPoint.y,
+                    )
+                    */
+                    /*val firstControlPoint = Offset(
+                        x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
+                        y = startPoint.y,
+                    )*/
+
+
+                    val previousX = (mWidth * (index) / partsOfXAxis) - spaceWithText.dp.toPx()
+                    val currentX = (mWidth * (index + 1) / partsOfXAxis) - spaceWithText.dp.toPx()
+
+                    val conX1 = (previousX + currentX) / 2f
+                    val conX2 = (previousX + currentX) / 2f
+                    val conY1 =
+                        radiusCirclePoint + mHeight - ((points[index - 1].second / maxY) * mHeight * 4 / 5)
+
+                    linePath.cubicTo(
+                        x1 = conX1,
+                        y1 = conY1,
+                        x2 = conX2,
+                        y2 = yPointOfCircle,
+                        x3 = xPointOfCircle,
+                        y3 = yPointOfCircle
+                    )
+                }
             }
+            //Draw line point
+            drawPath(
+                linePath,
+                color = Color(0xFF05332F),
+                style = Stroke(
+                    width = 4f,
+                    cap = StrokeCap.Round
+                )
+            )
+            /** filling the area under the path */
+            val fillPath = android.graphics.Path(linePath.asAndroidPath())
+                .asComposePath()
+                .apply {
+                   /* lineTo((mWidth / points.size) * points.first().first, mHeight - yAxisSpace)
+                    lineTo((mWidth / points.size) * 7, mHeight - yAxisSpace)*/
+                    close()
+                }
+            drawPath(
+                path = fillPath,
+                brush = Brush.verticalGradient(listOf(Color(0xFF066F65), Color.Transparent)),
+                style = Fill
+            )
         }
     }
 }

@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.baka.composeapp.features.animations.AmazingClock
 import com.baka.composeapp.features.animations.ParallelClockAnimation
-import com.baka.composeapp.features.animations.RotationClock
 import com.baka.composeapp.features.animations.SingleClockAnimation
 import com.baka.composeapp.features.charts.barschart.DrawSpiltFourCircle
 import com.baka.composeapp.features.charts.columns.ColumnsChart
@@ -43,17 +42,7 @@ fun HomeScreen(innerPadding: PaddingValues) {
         Spacer(modifier = Modifier.padding(8.dp))
         ColumnsChart()
         Spacer(modifier = Modifier.padding(8.dp))
-        val points = listOf(
-            Pair(100f, 300f),
-            Pair(150f, 100f),
-            Pair(250f, 500f),
-            Pair(400f, 300f),
-            Pair(500f, 100f),
-            Pair(600f, 400f)
-        )
         BezierCurve()
-        Spacer(modifier = Modifier.padding(8.dp))
-        RotationClock()
         Spacer(modifier = Modifier.padding(8.dp))
         DrawSpiltFourCircle()
         Spacer(modifier = Modifier.padding(8.dp))
