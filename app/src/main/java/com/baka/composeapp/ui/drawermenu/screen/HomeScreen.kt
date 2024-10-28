@@ -21,7 +21,7 @@ import com.baka.composeapp.features.animations.ParallelClockAnimation
 import com.baka.composeapp.features.animations.SingleClockAnimation
 import com.baka.composeapp.features.charts.barschart.DrawSpiltFourCircle
 import com.baka.composeapp.features.charts.columns.ColumnsChart
-import com.baka.composeapp.features.charts.lines.BezierCurve
+import com.baka.composeapp.features.charts.lines.ColumnBezierCurve
 import com.baka.composeapp.features.logicaction.SomeActionDemo
 import com.baka.composeapp.ui.drawermenu.HomeViewModel
 
@@ -42,7 +42,7 @@ fun HomeScreen(innerPadding: PaddingValues) {
         Spacer(modifier = Modifier.padding(8.dp))
         ColumnsChart()
         Spacer(modifier = Modifier.padding(8.dp))
-        BezierCurve()
+        ColumnBezierCurve()
         Spacer(modifier = Modifier.padding(8.dp))
         DrawSpiltFourCircle()
         Spacer(modifier = Modifier.padding(8.dp))

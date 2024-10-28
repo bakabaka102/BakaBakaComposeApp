@@ -135,7 +135,7 @@ fun ColumnsChart(
                 )
                 //Draw Columns
                 drawRoundRect(
-                    color = Color.Yellow,
+                    color = Color(0xFFe76f51),
                     topLeft = Offset(
                         xPointOfText - columnWidth / 2,
                         mHeight - columnHeight

@@ -87,7 +87,7 @@ fun DrawBezierCurves(height: Float = 80f, width: Float = 300f) {
 }
 
 @Composable
-fun BezierCurve(
+fun ColumnBezierCurve(
     width: Float = 300f, height: Float = 300f,
     lists: List<Pair<Float, Float>> = listOf(
         Pair(1f, 5f),
@@ -123,6 +123,7 @@ fun BezierCurve(
         val paddingSpace = 16
         val spaceWithText = 10
         val radiusCirclePoint = mWidth / 50
+        var firstPoint = Offset(0F, 0F)
 
         val dividedRange: List<Int> = divideRangeIntoEqualParts(
             previousMultipleOfNumber(value = minY.toInt(), number = partsOfYAxis),
@@ -145,6 +146,7 @@ fun BezierCurve(
             }
         }
         val linePath = Path()
+        val fillPath = android.graphics.Path(linePath.asAndroidPath()).asComposePath()
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
@@ -206,6 +208,7 @@ fun BezierCurve(
                 //Prepare Line points
                 if (index == 0) {
                     linePath.moveTo(xPointOfCircle, yPointOfCircle)
+                    firstPoint = Offset(xPointOfCircle, yPointOfCircle)
                 } else {
                     //Line normal
                     /*linePath.lineTo(xPointOfCircle, yPointOfCircle)*/
@@ -244,6 +247,17 @@ fun BezierCurve(
                     )
                 }
             }
+            fun closeWithBottomLine() {
+                /*fillPath.lineTo(mWidth, mHeight)
+                fillPath.lineTo(0F, mHeight)
+                fillPath.lineTo(firstPoint.x, firstPoint.y)*/
+                fillPath.lineTo(mWidth, mHeight)
+                fillPath.lineTo(0F, mHeight)
+                fillPath.lineTo(mHeight, 0f)
+                fillPath.lineTo(firstPoint.x, firstPoint.y)
+                fillPath.close()
+            }
+
             //Draw line point
             drawPath(
                 linePath,
@@ -254,18 +268,12 @@ fun BezierCurve(
                 )
             )
             /** filling the area under the path */
-            val fillPath = android.graphics.Path(linePath.asAndroidPath())
-                .asComposePath()
-                .apply {
-                   /* lineTo((mWidth / points.size) * points.first().first, mHeight - yAxisSpace)
-                    lineTo((mWidth / points.size) * 7, mHeight - yAxisSpace)*/
-                    close()
-                }
+            /*closeWithBottomLine()
             drawPath(
-                path = fillPath,
+                path = linePath,
                 brush = Brush.verticalGradient(listOf(Color(0xFF066F65), Color.Transparent)),
                 style = Fill
-            )
+            )*/
         }
     }
 }
