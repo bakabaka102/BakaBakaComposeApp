@@ -3,6 +3,7 @@ package com.baka.composeapp.features.charts.lines
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -100,180 +101,190 @@ fun ColumnBezierCurve(
     )
 ) {
     val points by remember { mutableStateOf(lists) }
-    Column(
-        modifier = Modifier
-            .size(width.dp, height.dp)
-            .background(Color.White),
-    ) {
-        var mWidth by remember {
-            mutableFloatStateOf(0f)
-        }
-        var mHeight by remember {
-            mutableFloatStateOf(0f)
-        }
-        val minY = points.minBy { it.second }.second.also {
-            Logger.i("Min of y --- $it")
-        }
-        val maxY = points.maxBy { it.second }.second.also {
-            Logger.i("Max of y --- $it")
-        }
-        val partsOfYAxis = 5
-        val partsOfXAxis = points.size
-        val yAxisSpace = mHeight / 5
-        val paddingSpace = 16
-        val spaceWithText = 10
-        val radiusCirclePoint = mWidth / 50
-        var firstPoint = Offset(0F, 0F)
+    var mWidth by remember {
+        mutableFloatStateOf(0f)
+    }
+    var mHeight by remember {
+        mutableFloatStateOf(0f)
+    }
+    val minY = points.minBy { it.second }.second.also {
+        Logger.i("Min of y --- $it")
+    }
+    val maxY = points.maxBy { it.second }.second.also {
+        Logger.i("Max of y --- $it")
+    }
+    val partsOfYAxis = 5
+    val partsOfXAxis = points.size
+    val yAxisSpace = mHeight / 5
+    val paddingSpace = 16
+    val spaceWithText = 10
+    val radiusCirclePoint = mWidth / 50
+    var firstPoint = Offset(0F, 0F)
 
-        val dividedRange: List<Int> = divideRangeIntoEqualParts(
-            previousMultipleOfNumber(value = minY.toInt(), number = partsOfYAxis),
-            nextMultipleOfNumber(value = maxY.toInt(), number = partsOfYAxis),
-            partsOfYAxis,
-        )
-        val density = LocalDensity.current
-        val textPaint = remember(density) {
-            Paint().apply {
-                color = Color(0xFF91085B).toArgb()
-                textAlign = Paint.Align.CENTER
-                textSize = density.run { 12.sp.toPx() }
-            }
-        }
-        // Measure the height of the text
-        val textPaintHeight by remember {
-            /*mutableFloatStateOf(textPaint.descent() - textPaint.ascent())*/
-            mutableFloatStateOf(textPaint.getTextHeightUsingFontMetrics()).also {
-                Logger.i("Text paint --- $it")
-            }
-        }
-        val linePath = Path()
-        val fillPath = android.graphics.Path(linePath.asAndroidPath()).asComposePath()
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 32.dp)
-                .background(Color.LightGray)
-        ) {
-            mWidth = this.size.width
-            mHeight = this.size.height
-            //Draw Text and horizontal lines
-            dividedRange.forEachIndexed { index, value ->
-                drawContext.canvas.nativeCanvas.drawText(
-                    value.toString(),
-                    paddingSpace.dp.toPx() / 2f,
-                    mHeight - yAxisSpace * index,
-                    textPaint,
-                )
-                drawLine(
-                    color = Color(0xFF91085B),
-                    start = Offset(
-                        0f + (paddingSpace.dp.toPx() / 2f) + spaceWithText.dp.toPx(),
-                        (mHeight - yAxisSpace * index)
-                    ),
-                    end = Offset(
-                        mWidth - paddingSpace,
-                        (mHeight - yAxisSpace * index)
-                    ),
-                    strokeWidth = 2f,
-                    pathEffect = PathEffect.dashPathEffect(
-                        intervals = floatArrayOf(16f, 4f),
-                        phase = 0f,
-                    ),
-                    cap = StrokeCap.Round,
-                )
-            }
-            points.forEachIndexed { index, (xValue, yValue) ->
-                val xPointOfText =
-                    (mWidth * (index + 1) / partsOfXAxis) - spaceWithText.dp.toPx()
-                val barHeight = ((yValue / maxY) * mHeight).also {
-                    Logger.i("yValue == $yValue ---maxY == $maxY--- mHeight == $mHeight -- Height of point $it")
-                }
-                val xPointOfCircle = xPointOfText - radiusCirclePoint / 2
-                val yPointOfCircle = radiusCirclePoint + mHeight - (barHeight * 4 / 5)
-                /*val barHeight = (dataPoint.value / maxBarValue) * maxBarHeight
-                val barHeight = (yValue / maxY) * mHeight * 4 / 5
-                */
-                //Draw Horizontal texts
-                drawContext.canvas.nativeCanvas.drawText(
-                    xValue.toString(),
-                    xPointOfText,
-                    mHeight + textPaintHeight,
-                    textPaint,
-                )
-                //Draw points
-                drawCircle(
-                    color = Color.Yellow,
-                    radius = radiusCirclePoint,
-                    center = Offset(xPointOfCircle, yPointOfCircle)
-                )
-                //Prepare Line points
-                if (index == 0) {
-                    linePath.moveTo(xPointOfCircle, yPointOfCircle)
-                    firstPoint = Offset(xPointOfCircle, yPointOfCircle)
-                } else {
-                    //Line normal
-                    /*linePath.lineTo(xPointOfCircle, yPointOfCircle)*/
-                    //Other: Count points use cubicTo to draw a curve line
-                    //https://medium.com/@kezhang404/either-compose-is-elegant-or-if-you-want-to-draw-something-with-an-android-view-you-have-to-7ce00dc7cc1
-                    /*val firstControlPoint = Offset(
-                        x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
-                        y = startPoint.y,
-                    )
-                    val secondControlPoint = Offset(
-                        x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
-                        y = endPoint.y,
-                    )
-                    */
-                    /*val firstControlPoint = Offset(
-                        x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
-                        y = startPoint.y,
-                    )*/
-
-
-                    val previousX = (mWidth * (index) / partsOfXAxis) - spaceWithText.dp.toPx()
-                    val currentX = (mWidth * (index + 1) / partsOfXAxis) - spaceWithText.dp.toPx()
-
-                    val conX1 = (previousX + currentX) / 2f
-                    val conX2 = (previousX + currentX) / 2f
-                    val conY1 =
-                        radiusCirclePoint + mHeight - ((points[index - 1].second / maxY) * mHeight * 4 / 5)
-
-                    linePath.cubicTo(
-                        x1 = conX1,
-                        y1 = conY1,
-                        x2 = conX2,
-                        y2 = yPointOfCircle,
-                        x3 = xPointOfCircle,
-                        y3 = yPointOfCircle
-                    )
-                }
-            }
-            fun closeWithBottomLine() {
-                /*fillPath.lineTo(mWidth, mHeight)
-                fillPath.lineTo(0F, mHeight)
-                fillPath.lineTo(firstPoint.x, firstPoint.y)*/
-                fillPath.lineTo(mWidth, mHeight)
-                fillPath.lineTo(0F, mHeight)
-                fillPath.lineTo(mHeight, 0f)
-                fillPath.lineTo(firstPoint.x, firstPoint.y)
-                fillPath.close()
-            }
-
-            //Draw line point
-            drawPath(
-                linePath,
-                color = Color(0xFF05332F),
-                style = Stroke(
-                    width = 4f,
-                    cap = StrokeCap.Round
-                )
-            )
-            /** filling the area under the path */
-            /*closeWithBottomLine()
-            drawPath(
-                path = linePath,
-                brush = Brush.verticalGradient(listOf(Color(0xFF066F65), Color.Transparent)),
-                style = Fill
-            )*/
+    val dividedRange: List<Int> = divideRangeIntoEqualParts(
+        previousMultipleOfNumber(value = minY.toInt(), number = partsOfYAxis),
+        nextMultipleOfNumber(value = maxY.toInt(), number = partsOfYAxis),
+        partsOfYAxis,
+    )
+    val density = LocalDensity.current
+    val textPaint = remember(density) {
+        Paint().apply {
+            color = Color(0xFF91085B).toArgb()
+            textAlign = Paint.Align.CENTER
+            textSize = density.run { 12.sp.toPx() }
         }
     }
+    // Measure the height of the text
+    val textPaintHeight by remember {
+        /*mutableFloatStateOf(textPaint.descent() - textPaint.ascent())*/
+        mutableFloatStateOf(textPaint.getTextHeightUsingFontMetrics()).also {
+            Logger.i("Text paint --- $it")
+        }
+    }
+    val linePath = Path()
+    val fillPath = android.graphics
+        .Path(linePath.asAndroidPath())
+        .asComposePath()
+    Box(
+        modifier = Modifier
+            .size(width.dp, height.dp)
+            .background(Color.White)
+            .drawWithCache {
+                onDrawBehind {
+
+
+                    /*Canvas(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 32.dp)
+                            .background(Color.LightGray)
+                    ) {*/
+                        mWidth = this.size.width
+                        mHeight = this.size.height
+                        //Draw Text and horizontal lines
+                        dividedRange.forEachIndexed { index, value ->
+                            drawContext.canvas.nativeCanvas.drawText(
+                                value.toString(),
+                                paddingSpace.dp.toPx() / 2f,
+                                mHeight - yAxisSpace * index,
+                                textPaint,
+                            )
+                            drawLine(
+                                color = Color(0xFF91085B),
+                                start = Offset(
+                                    0f + (paddingSpace.dp.toPx() / 2f) + spaceWithText.dp.toPx(),
+                                    (mHeight - yAxisSpace * index)
+                                ),
+                                end = Offset(
+                                    mWidth - paddingSpace,
+                                    (mHeight - yAxisSpace * index)
+                                ),
+                                strokeWidth = 2f,
+                                pathEffect = PathEffect.dashPathEffect(
+                                    intervals = floatArrayOf(16f, 4f),
+                                    phase = 0f,
+                                ),
+                                cap = StrokeCap.Round,
+                            )
+                        }
+                        points.forEachIndexed { index, (xValue, yValue) ->
+                            val xPointOfText =
+                                (mWidth * (index + 1) / partsOfXAxis) - spaceWithText.dp.toPx()
+                            val barHeight = ((yValue / maxY) * mHeight).also {
+                                Logger.i("yValue == $yValue ---maxY == $maxY--- mHeight == $mHeight -- Height of point $it")
+                            }
+                            val xPointOfCircle = xPointOfText - radiusCirclePoint / 2
+                            val yPointOfCircle = radiusCirclePoint + mHeight - (barHeight * 4 / 5)
+                            /*val barHeight = (dataPoint.value / maxBarValue) * maxBarHeight
+                            val barHeight = (yValue / maxY) * mHeight * 4 / 5
+                            */
+                            //Draw Horizontal texts
+                            drawContext.canvas.nativeCanvas.drawText(
+                                xValue.toString(),
+                                xPointOfText,
+                                mHeight + textPaintHeight,
+                                textPaint,
+                            )
+                            //Draw points
+                            drawCircle(
+                                color = Color.Yellow,
+                                radius = radiusCirclePoint,
+                                center = Offset(xPointOfCircle, yPointOfCircle)
+                            )
+                            //Prepare Line points
+                            if (index == 0) {
+                                linePath.moveTo(xPointOfCircle, yPointOfCircle)
+                                firstPoint = Offset(xPointOfCircle, yPointOfCircle)
+                            } else {
+                                //Line normal
+                                /*linePath.lineTo(xPointOfCircle, yPointOfCircle)*/
+                                //Other: Count points use cubicTo to draw a curve line
+                                //https://medium.com/@kezhang404/either-compose-is-elegant-or-if-you-want-to-draw-something-with-an-android-view-you-have-to-7ce00dc7cc1
+                                /*val firstControlPoint = Offset(
+                                    x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
+                                    y = startPoint.y,
+                                )
+                                val secondControlPoint = Offset(
+                                    x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
+                                    y = endPoint.y,
+                                )
+                                */
+                                /*val firstControlPoint = Offset(
+                                    x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
+                                    y = startPoint.y,
+                                )*/
+
+
+                                val previousX =
+                                    (mWidth * (index) / partsOfXAxis) - spaceWithText.dp.toPx()
+                                val currentX =
+                                    (mWidth * (index + 1) / partsOfXAxis) - spaceWithText.dp.toPx()
+
+                                val conX1 = (previousX + currentX) / 2f
+                                val conX2 = (previousX + currentX) / 2f
+                                val conY1 =
+                                    radiusCirclePoint + mHeight - ((points[index - 1].second / maxY) * mHeight * 4 / 5)
+
+                                linePath.cubicTo(
+                                    x1 = conX1,
+                                    y1 = conY1,
+                                    x2 = conX2,
+                                    y2 = yPointOfCircle,
+                                    x3 = xPointOfCircle,
+                                    y3 = yPointOfCircle
+                                )
+                            }
+                        }
+                        fun closeWithBottomLine() {
+                            /*fillPath.lineTo(mWidth, mHeight)
+                            fillPath.lineTo(0F, mHeight)
+                            fillPath.lineTo(firstPoint.x, firstPoint.y)*/
+                            fillPath.lineTo(mWidth, mHeight)
+                            fillPath.lineTo(0F, mHeight)
+                            fillPath.lineTo(mHeight, 0f)
+                            fillPath.lineTo(firstPoint.x, firstPoint.y)
+                            fillPath.close()
+                        }
+
+                        //Draw line point
+                        drawPath(
+                            linePath,
+                            color = Color(0xFF05332F),
+                            style = Stroke(
+                                width = 4f,
+                                cap = StrokeCap.Round
+                            )
+                        )
+                        /** filling the area under the path */
+                        /** filling the area under the path */
+                        closeWithBottomLine()
+                        drawPath(
+                            path = linePath,
+                            brush = Brush.verticalGradient(listOf(Color(0xFF066F65), Color.Transparent)),
+                            style = Fill
+                        )
+                    /*}*/
+                }
+            },
+    )
 }

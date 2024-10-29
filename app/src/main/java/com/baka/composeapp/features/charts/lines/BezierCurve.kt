@@ -16,6 +16,10 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 
+//https://archive.is/0SrIb
+//https://medium.com/mobile-app-development-publication/learn-jetpack-compose-canvas-cubic-and-quadratic-bezier-and-its-usage-96a4d9a7e3fb
+//https://medium.com/@pranjalg2308/understanding-bezier-curve-in-android-and-moddinggraphview-library-a9b1f0f95cd0
+
 //https://medium.com/@kezhang404/either-compose-is-elegant-or-if-you-want-to-draw-something-with-an-android-view-you-have-to-7ce00dc7cc1
 //https://gist.github.com/0xZhangKe/0b37c18df37cdcad92e99b91e77d8d54
 //https://gist.github.com/0xZhangKe/f2d4a1771b33f4a046ca9a861ecfc04e

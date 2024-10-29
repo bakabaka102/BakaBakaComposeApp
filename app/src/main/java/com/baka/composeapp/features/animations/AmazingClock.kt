@@ -64,9 +64,9 @@ fun AmazingClock(durationTime: Int = 10000) {
     val dotsVisible = remember(currentHour) {
         hours.map { index ->
             when {
-                index > currentHour -> false
-                index > currentHour - 12 -> true
-                /*index == currentHour - 12 || index == currentHour -> true*/
+                /*index > currentHour -> false
+                index > currentHour - 12 -> true*/
+                index == currentHour - 12 || index == currentHour -> true
                 else -> false
             }
         }

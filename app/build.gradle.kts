@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+
+    //#kotlin version = "2.0.0" need this line
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -67,6 +70,8 @@ dependencies {
     //implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.serialization.json)
 
+    //Shape
+    implementation(libs.androidx.graphics.shapes)
 //    implementation(libs.androidx.material.icons.extended)
 
     testImplementation(libs.junit)
