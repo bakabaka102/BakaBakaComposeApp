@@ -6,6 +6,8 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.spec.SecretKeySpec
 
+//https://gist.github.com/reuniware/1015e933ecd75224a8dcd54d6822960e
+
 //https://viblo.asia/p/ma-hoa-du-lieu-voi-thuat-toan-aes-advanced-encryption-standard-trong-android-yMnKMLGz57P
 object AESHelperKt {
     const val ALGORITHM = "AES"

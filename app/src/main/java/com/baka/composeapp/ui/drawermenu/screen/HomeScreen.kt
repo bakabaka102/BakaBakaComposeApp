@@ -38,8 +38,6 @@ fun HomeScreen(innerPadding: PaddingValues) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.padding(8.dp))
-        SomeOfClock()
-        Spacer(modifier = Modifier.padding(8.dp))
         ColumnsChart()
         Spacer(modifier = Modifier.padding(8.dp))
         ColumnBezierCurve()

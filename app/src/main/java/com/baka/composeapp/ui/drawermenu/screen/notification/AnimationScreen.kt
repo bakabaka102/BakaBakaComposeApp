@@ -22,8 +22,8 @@ sealed class Screens(
         selectedIcon = Icons.Filled.Animation,
     )
 
-    data object ShoppingScreen : Screens(
-        title = "Shopping",
+    data object ChartsScreen : Screens(
+        title = "Chart",
         unSelectedItem = Icons.Outlined.ShoppingCart,
         selectedIcon = Icons.Filled.ShoppingCart,
     )

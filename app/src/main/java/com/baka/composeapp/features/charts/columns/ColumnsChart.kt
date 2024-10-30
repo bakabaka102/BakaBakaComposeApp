@@ -3,6 +3,7 @@ package com.baka.composeapp.features.charts.columns
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -21,14 +23,17 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.baka.composeapp.features.charts.lines.inRangePointTouch
 import com.baka.composeapp.helper.Logger
 import com.baka.composeapp.helper.divideRangeIntoEqualParts
 import com.baka.composeapp.helper.getTextHeightUsingFontMetrics
 import com.baka.composeapp.helper.nextMultipleOfNumber
 import com.baka.composeapp.helper.previousMultipleOfNumber
+import kotlin.math.abs
 
 @Composable
 fun ColumnsChart(
@@ -86,12 +91,20 @@ fun ColumnsChart(
                 Logger.i("Text paint --- $it")
             }
         }
+        var touchPosition by remember { mutableStateOf<Offset?>(null) }
+        var isTouched by remember { mutableStateOf(false) }
 
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 32.dp)
                 .background(Color.LightGray)
+                .pointerInput(Unit) {
+                    detectTapGestures { tapPoint ->
+                        touchPosition = tapPoint
+                        isTouched = true
+                    }
+                }
         ) {
             mWidth = this.size.width
             mHeight = this.size.height
@@ -143,7 +156,24 @@ fun ColumnsChart(
                     size = Size(columnWidth, columnHeight),
                     cornerRadius = CornerRadius(x = 8f, y = 8f),
                 )
+                /*if (isTouched &&
+                    inRangePointTouch(
+                        touchPoint = touchPosition,
+                        pointInPath = Offset(xPointOfCircle, yPointOfCircle)
+                    )
+                ) {
+                    drawContext.canvas.nativeCanvas.drawText(
+                        "${points[index].first} - ${points[index].second}",
+                        xPointOfCircle,
+                        yPointOfCircle - 10,
+                        textPaint,
+                    )
+                }*/
             }
         }
     }
 }
+
+fun inRangePointTouch(touchPoint: Offset?, pointInPath: Offset, gap: Float = 20f) =
+    abs(touchPoint?.x?.minus(pointInPath.x) ?: 0f) < gap
+            && abs(touchPoint?.y?.minus(pointInPath.y) ?: 0f) < gap

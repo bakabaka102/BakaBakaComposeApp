@@ -27,7 +27,7 @@ import androidx.compose.ui.graphics.Color
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NotificationScreen(innerPadding: PaddingValues) {
-    val tabItems = listOf(Screens.AnimationScreen, Screens.ShoppingScreen, Screens.AccountScreen)
+    val tabItems = listOf(Screens.AnimationScreen, Screens.ChartsScreen, Screens.AccountScreen)
     //https://velmurugan-murugesan.medium.com/implementing-tablayout-with-viewpager-on-jetpack-compose-ac33ba32315f
     TabRow(innerPadding, tabItems)
 }
@@ -101,7 +101,7 @@ fun TabSheet(
 ) {
     when (selectedTab) {
         0 -> AnimationScreenPager()
-        1 -> ShoppingScreenPager()
+        1 -> ChartsScreenPager()
         2 -> AccountScreenPager()
     }
 }
