@@ -110,7 +110,7 @@ private fun DrawScope.drawBezierCurve(
         val y = height - height * ((points[index] - minPoint) / total)
         /*Draw curve line*/
         if (lastPoint != null) {
-            buildCurveLine(path, lastPoint, Offset(x, y))
+            path.buildCurveLine(lastPoint, Offset(x, y))
         }
         lastPoint = Offset(x, y)
         /*Go to start line*/
@@ -196,7 +196,7 @@ fun inRangePointTouch(touchPoint: Offset?, pointInPath: Offset, gap: Float = 20f
     abs(touchPoint?.x?.minus(pointInPath.x) ?: 0f) < gap
             && abs(touchPoint?.y?.minus(pointInPath.y) ?: 0f) < gap
 
-private fun buildCurveLine(path: Path, startPoint: Offset, endPoint: Offset) {
+fun Path.buildCurveLine(startPoint: Offset, endPoint: Offset) {
     val firstControlPoint = Offset(
         x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
         y = startPoint.y,
@@ -205,7 +205,7 @@ private fun buildCurveLine(path: Path, startPoint: Offset, endPoint: Offset) {
         x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
         y = endPoint.y,
     )
-    path.cubicTo(
+    this.cubicTo(
         x1 = firstControlPoint.x,
         y1 = firstControlPoint.y,
         x2 = secondControlPoint.x,

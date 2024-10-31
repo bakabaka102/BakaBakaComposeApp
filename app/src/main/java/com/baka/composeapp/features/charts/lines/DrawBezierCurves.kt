@@ -117,7 +117,7 @@ fun ColumnBezierCurve(
     val yAxisSpace = mHeight / 5
     val paddingSpace = 16
     val spaceWithText = 10
-    val radiusCirclePoint = mWidth / 50
+    val radiusCirclePoint = mWidth / 60
     var firstPoint = Offset(0F, 0F)
 
     val dividedRange: List<Int> = divideRangeIntoEqualParts(
@@ -141,6 +141,7 @@ fun ColumnBezierCurve(
         }
     }
     val linePath = Path()
+    var lastPoint: Offset? = null
     var touchPosition by remember { mutableStateOf<Offset?>(null) }
     var isTouched by remember { mutableStateOf(false) }
     val fillPath = android.graphics
@@ -221,21 +222,11 @@ fun ColumnBezierCurve(
                             /*linePath.lineTo(xPointOfCircle, yPointOfCircle)*/
                             //Other: Count points use cubicTo to draw a curve line
                             //https://medium.com/@kezhang404/either-compose-is-elegant-or-if-you-want-to-draw-something-with-an-android-view-you-have-to-7ce00dc7cc1
-                            /*val firstControlPoint = Offset(
-                                x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
-                                y = startPoint.y,
-                            )
-                            val secondControlPoint = Offset(
-                                x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
-                                y = endPoint.y,
-                            )
-                            */
-                            /*val firstControlPoint = Offset(
-                                x = startPoint.x + (endPoint.x - startPoint.x) / 2F,
-                                y = startPoint.y,
-                            )*/
-
-
+                            /*lastPoint?.let {
+                                linePath.buildCurveLine(it, Offset(xPointOfCircle, yPointOfCircle))
+                            }
+                            lastPoint = Offset(xPointOfCircle, yPointOfCircle)*/
+                            lastPoint = Offset(xPointOfCircle, yPointOfCircle)
                             val previousX =
                                 (mWidth * (index) / partsOfXAxis) - spaceWithText.dp.toPx()
                             val currentX =
@@ -269,17 +260,11 @@ fun ColumnBezierCurve(
                             )
                         }
                     }
-                    fun closeWithBottomLine() {
-                        /*fillPath.lineTo(mWidth, mHeight)
-                        fillPath.lineTo(0F, mHeight)
-                        fillPath.lineTo(firstPoint.x, firstPoint.y)*/
-                        fillPath.lineTo(mWidth, mHeight)
-                        fillPath.lineTo(0F, mHeight)
-                        fillPath.lineTo(mHeight, 0f)
-                        fillPath.lineTo(firstPoint.x, firstPoint.y)
-                        fillPath.close()
-                    }
-
+                    /*fun closeWithBottomLine() {
+                        linePath.lineTo(mWidth, mHeight)
+                        linePath.lineTo(0F, mHeight)
+                        linePath.lineTo(firstPoint.x, firstPoint.y)
+                    }*/
                     /*Draw line points*/
                     drawPath(
                         linePath,
@@ -290,7 +275,13 @@ fun ColumnBezierCurve(
                         )
                     )
                     /** filling the area under the path */
-                    closeWithBottomLine()
+                    //closeWithBottomLine()
+                    linePath.lineTo(
+                        lastPoint?.x ?: (mWidth - spaceWithText.dp.toPx() - radiusCirclePoint / 2),
+                        mHeight
+                    )
+                    linePath.lineTo(firstPoint.x, mHeight)
+                    linePath.lineTo(firstPoint.x, firstPoint.y)
                     drawPath(
                         path = linePath,
                         brush = Brush.verticalGradient(
