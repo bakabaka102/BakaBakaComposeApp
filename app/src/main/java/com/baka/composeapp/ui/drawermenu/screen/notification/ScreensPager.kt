@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.baka.composeapp.features.animations.RotationClock
+import com.baka.composeapp.features.animations.SomeOfClock
 import com.baka.composeapp.features.charts.lines.SomeOfBeziersCurve
-import com.baka.composeapp.ui.drawermenu.screen.SomeOfClock
 
 @Composable
 fun AnimationScreenPager() {

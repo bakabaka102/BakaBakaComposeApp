@@ -9,6 +9,8 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -202,4 +204,26 @@ private fun calculateClockHandLength(stepHeight: Float, currentHour: Int): Float
 private fun calculateAssembleDistance(stepHeight: Float, currentHour: Int): Float {
     val fixedHour = 24 - currentHour - 1
     return stepHeight * fixedHour
+}
+
+@Composable
+fun SomeOfClock() {
+    AmazingClock()
+    Spacer(modifier = Modifier.padding(8.dp))
+    val size = 200.dp
+    Box(
+        modifier = Modifier
+            .size(size)
+            .background(Color.Black)
+    ) {
+        ParallelClockAnimation()
+    }
+    Spacer(modifier = Modifier.padding(8.dp))
+    Box(
+        modifier = Modifier
+            .size(size)
+            .background(Color.Black)
+    ) {
+        SingleClockAnimation()
+    }
 }
