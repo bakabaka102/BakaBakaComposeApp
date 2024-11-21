@@ -88,7 +88,7 @@ fun DrawSpiltFourCircle(width: Float = 200f, height: Float = 200f) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp)
+            .padding(horizontal = 64.dp)
             .horizontalScroll(state),
     ) {
         val padding = 48f
@@ -229,7 +229,7 @@ fun PieChart(data: List<PieData> = dataPie) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp),
+            .padding(horizontal = 64.dp),
         verticalArrangement = Arrangement.Center
     ) {
 
@@ -326,7 +326,7 @@ fun ScalablePieChart(data: List<Float> = dataPie.map { it.value }) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp)
+            .padding(horizontal = 64.dp)
             .background(Color.White)
             .then(scaleModifier) // Apply gesture modifier
     ) {
@@ -387,7 +387,7 @@ fun InteractivePieChart(data: List<Float> = dataPie.map { it.value }) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp)
+            .padding(horizontal = 64.dp)
             .background(Color.White)
             .then(pieTouchModifier) // Attach touch modifier
     ) {
