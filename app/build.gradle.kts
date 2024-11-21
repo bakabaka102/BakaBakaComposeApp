@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.baka.composeapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.baka.composeapp"
