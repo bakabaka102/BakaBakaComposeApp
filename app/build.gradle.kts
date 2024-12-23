@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId = "com.baka.composeapp"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -31,6 +31,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            isDebuggable = true // Đặt để chế độ debug cho phép gỡ lỗi
         }
     }
     compileOptions {

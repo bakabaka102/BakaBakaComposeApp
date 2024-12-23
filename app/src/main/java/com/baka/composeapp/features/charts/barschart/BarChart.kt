@@ -262,7 +262,6 @@ fun PieChart(data: List<PieData> = dataPie) {
                     }
                 }
         ) {
-            val center = Offset(size.width / 2, size.height / 2)
             //Draw chart
             angleProgress.forEachIndexed { index, angle ->
                 drawArc(
@@ -311,11 +310,11 @@ internal fun touchPointToAngle(
 
 
 @Composable
-fun ScalablePieChart(data: List<Float> = dataPie.map { it.value }) {
+fun ScalablePieChart(data: List<PieData> = dataPie) {
     // Initial scale factor
     var scale by remember { mutableFloatStateOf(1f) }
     // Sum up the data to calculate pie slices
-    val total = data.sum()
+    val total = data.map { it.value }.sum()
     // Modifier to handle scaling gesture
     val scaleModifier = Modifier.pointerInput(Unit) {
         detectTransformGestures { _, _, zoom, _ ->
@@ -334,16 +333,12 @@ fun ScalablePieChart(data: List<Float> = dataPie.map { it.value }) {
             val center = Offset(size.width / 2, size.height / 2)
             var startAngle = 0f
 
-            data.forEach { value ->
-                val sweepAngle = (value / total) * 360f
+            data.forEach { pie ->
+                val sweepAngle = (pie.value / total) * 360f
 
                 scale(scale, center) {  // Apply scale around the center of the pie chart
                     drawArc(
-                        color = Color(
-                            red = (0..255).random(),
-                            green = (0..255).random(),
-                            blue = (0..255).random()
-                        ),
+                        color = pie.color,
                         startAngle = startAngle,
                         sweepAngle = sweepAngle,
                         useCenter = true,
@@ -358,9 +353,9 @@ fun ScalablePieChart(data: List<Float> = dataPie.map { it.value }) {
 }
 
 @Composable
-fun InteractivePieChart(data: List<Float> = dataPie.map { it.value }) {
+fun InteractivePieChart(data: List<PieData> = dataPie) {
     // Total value for calculating percentages
-    val total = data.sum()
+    val total = data.map { it.value }.sum()
     // State to track the index of the touched slice
     var selectedSliceIndex by remember { mutableStateOf<Int?>(null) }
     // Animation scale factor for the selected slice
@@ -375,8 +370,8 @@ fun InteractivePieChart(data: List<Float> = dataPie.map { it.value }) {
 
             // Calculate which slice the touch corresponds to
             var startAngle = 0f
-            selectedSliceIndex = data.indexOfFirst { value ->
-                val sweepAngle = (value / total) * 360f
+            selectedSliceIndex = data.indexOfFirst { pie ->
+                val sweepAngle = (pie.value / total) * 360f
                 val isTouched = touchAngle in startAngle..(startAngle + sweepAngle)
                 startAngle += sweepAngle
                 isTouched
@@ -400,8 +395,8 @@ fun InteractivePieChart(data: List<Float> = dataPie.map { it.value }) {
             var startAngle = 0f
 
             // Draw each slice
-            data.forEachIndexed { index, value ->
-                val sweepAngle = (value / total) * 360f
+            data.forEachIndexed { index, pie ->
+                val sweepAngle = (pie.value / total) * 360f
                 val isSelected = index == selectedSliceIndex
                 val sliceScale = if (isSelected) selectedSliceScale else 1f
 
@@ -413,11 +408,7 @@ fun InteractivePieChart(data: List<Float> = dataPie.map { it.value }) {
 
                 // Draw the slice with optional offset for selected slice
                 drawArc(
-                    color = Color(
-                        red = (0..255).random(),
-                        green = (0..255).random(),
-                        blue = (0..255).random()
-                    ),
+                    color = pie.color,
                     startAngle = startAngle,
                     sweepAngle = sweepAngle,
                     useCenter = true,
@@ -436,5 +427,15 @@ fun calculateTouchAngle(center: Offset, tapOffset: Offset): Float {
     val dy = tapOffset.y - center.y
     val angle = Math.toDegrees(atan2(dy.toDouble(), dx.toDouble())).toFloat()
     return (angle + 360) % 360 // Normalize angle to [0, 360)
+}
+
+@Composable
+fun DrawPies() {
+    PieChart()
+    Spacer(modifier = Modifier.padding(8.dp))
+    ScalablePieChart()
+    Spacer(modifier = Modifier.padding(8.dp))
+    InteractivePieChart()
+    Spacer(modifier = Modifier.padding(8.dp))
 }
 

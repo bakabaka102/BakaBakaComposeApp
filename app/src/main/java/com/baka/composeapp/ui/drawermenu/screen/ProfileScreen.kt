@@ -14,7 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.baka.composeapp.features.charts.barschart.DrawPies
 import com.baka.composeapp.features.charts.shapes.AnimationShape
+import com.baka.composeapp.features.charts.shapes.DrawPathPolygon
 import com.baka.composeapp.features.charts.shapes.HexPolygon
 import com.baka.composeapp.features.charts.shapes.MixShapes
 import com.baka.composeapp.features.charts.shapes.PolygonAsClip
@@ -33,6 +35,10 @@ fun ProfileScreen(innerPadding: PaddingValues) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         HexPolygon()
+        Spacer(modifier = Modifier.padding(8.dp))
+        DrawPathPolygon()
+        Spacer(modifier = Modifier.padding(8.dp))
+        DrawPies()
         Spacer(modifier = Modifier.padding(8.dp))
         MixShapes()
         Spacer(modifier = Modifier.padding(8.dp))

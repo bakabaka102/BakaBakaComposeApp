@@ -14,10 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.baka.composeapp.features.animations.AnimationDrawPathPolygons
 import com.baka.composeapp.features.charts.barschart.DrawSpiltFourCircle
-import com.baka.composeapp.features.charts.barschart.InteractivePieChart
-import com.baka.composeapp.features.charts.barschart.PieChart
-import com.baka.composeapp.features.charts.barschart.ScalablePieChart
 import com.baka.composeapp.features.charts.columns.ColumnsChart
 import com.baka.composeapp.features.charts.lines.ColumnBezierCurve
 import com.baka.composeapp.features.logicaction.SomeActionDemo
@@ -42,13 +40,9 @@ fun HomeScreen(innerPadding: PaddingValues) {
         Spacer(modifier = Modifier.padding(8.dp))
         DrawSpiltFourCircle()
         Spacer(modifier = Modifier.padding(8.dp))
-        PieChart()
-        Spacer(modifier = Modifier.padding(8.dp))
-        ScalablePieChart()
-        Spacer(modifier = Modifier.padding(8.dp))
-        InteractivePieChart()
-        Spacer(modifier = Modifier.padding(8.dp))
         SomeActionDemo(viewModel)
+        Spacer(modifier = Modifier.padding(8.dp))
+        AnimationDrawPathPolygons()
         Spacer(modifier = Modifier.padding(80.dp))
     }
 }

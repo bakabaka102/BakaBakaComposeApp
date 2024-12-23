@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.baka.composeapp.features.productlist.models.Product
 import com.baka.composeapp.helper.Logger
 
 @Composable
@@ -139,3 +138,5 @@ fun ProductListPage(
         }
     }
 }
+
+data class Product(val id: Int, val name: String, val price: Double)
