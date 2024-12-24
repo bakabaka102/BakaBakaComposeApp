@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.baka.composeapp.features.animations.AnimateVectorDrawableAlongPath
 import com.baka.composeapp.features.animations.AnimationDrawPathPolygons
 import com.baka.composeapp.features.charts.barschart.DrawSpiltFourCircle
 import com.baka.composeapp.features.charts.columns.ColumnsChart
@@ -34,15 +35,17 @@ fun HomeScreen(innerPadding: PaddingValues) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.padding(8.dp))
-        ColumnsChart()
-        Spacer(modifier = Modifier.padding(8.dp))
-        ColumnBezierCurve()
-        Spacer(modifier = Modifier.padding(8.dp))
-        DrawSpiltFourCircle()
-        Spacer(modifier = Modifier.padding(8.dp))
-        SomeActionDemo(viewModel)
-        Spacer(modifier = Modifier.padding(8.dp))
+        //ColumnsChart()
+        //Spacer(modifier = Modifier.padding(8.dp))
+        //ColumnBezierCurve()
+        //Spacer(modifier = Modifier.padding(8.dp))
+        //DrawSpiltFourCircle()
+        //Spacer(modifier = Modifier.padding(8.dp))
+        //SomeActionDemo(viewModel)
+        //Spacer(modifier = Modifier.padding(8.dp))
         AnimationDrawPathPolygons()
+        Spacer(modifier = Modifier.padding(8.dp))
+        AnimateVectorDrawableAlongPath()
         Spacer(modifier = Modifier.padding(80.dp))
     }
 }

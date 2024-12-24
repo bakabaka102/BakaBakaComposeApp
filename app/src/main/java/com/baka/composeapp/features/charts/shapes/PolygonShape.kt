@@ -24,11 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
-import com.baka.composeapp.features.createPolygonPath
+import com.baka.composeapp.features.buildPolygonPath
 import com.baka.composeapp.helper.Logger
 import kotlin.math.roundToInt
 
-//https://archive.is/cEAZ5
 //https://archive.is/qgj3R
 
 //file: PolygonShape.kt
@@ -85,7 +84,7 @@ private fun DrawPath(sides: Int) {
             .background(Color.White)
     ) {
         val center = PointF(size.width / 2, size.height / 2)
-        val mainPath = createPolygonPath(center = center, sides = sides, radius = size.width / 2)
+        val mainPath = buildPolygonPath(center = center, sides = sides, radius = size.width / 2)
         if (sides >= 3) {
             drawPath(
                 color = Color(0xFF7E46E3),
