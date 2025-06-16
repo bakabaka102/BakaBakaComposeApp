@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "BakaBakaComposeApp"
 include(":app")
- 
+include(":newsapp")
