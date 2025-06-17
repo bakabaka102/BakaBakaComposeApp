@@ -1,6 +1,15 @@
 package hn.news.app.ui.home
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -9,7 +18,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import hn.news.app.NewsList
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun HomeScreen() {
@@ -31,6 +41,33 @@ fun HomeScreen() {
             0 -> NewsList(newsListForYou)
             1 -> NewsList(newsListTrending)
             2 -> NewsList(newsListWorld)
+        }
+    }
+}
+
+@Composable
+fun NewsList(newsList: List<News>) {
+    LazyColumn(contentPadding = PaddingValues(16.dp)) {
+        items(newsList.size) { index ->
+            NewsItem(newsList[index])
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+    }
+}
+
+@Composable
+fun NewsItem(news: News) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(4.dp),
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = news.title, style = MaterialTheme.typography.titleSmall)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "${news.source} • ${news.timeAgo}",
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }

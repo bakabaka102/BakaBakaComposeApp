@@ -1,5 +1,8 @@
 package hn.news.app.ui.home
 
+//import androidx.compose.material.BottomNavigation
+//import androidx.compose.material.BottomNavigationItem
+//import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person

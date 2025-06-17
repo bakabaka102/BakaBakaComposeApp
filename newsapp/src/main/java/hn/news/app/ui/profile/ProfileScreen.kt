@@ -1,4 +1,4 @@
-package hn.news.app.ui.explore
+package hn.news.app.ui.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,14 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun ExploreScreen() {
+fun ProfileScreen() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Yellow)
             .fillMaxHeight()
     ) {
-        Text("Explore")
+        Text("Profile")
     }
 }
 
