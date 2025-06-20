@@ -12,4 +12,5 @@ sealed class Screens(
         override var title: String = "ProfileScreen"
     ) : Screens(route, title)
 
+    data object NewsDetailScreen : Screens("NewsDetailScreen", "NewsDetailScreen")
 }

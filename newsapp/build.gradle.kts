@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.parcelize)
+    //kotlin("plugin.parcelize")
 }
 
 android {
@@ -60,7 +62,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.material)
-    //implementation(libs.material3)
+    implementation(libs.androidx.foundation)
+
 
 
 }

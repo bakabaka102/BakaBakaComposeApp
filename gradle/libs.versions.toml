@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.3"
+foundation = "1.8.3"
 graphicsShapes = "1.0.1"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
@@ -17,6 +18,7 @@ kotlinParcelize = "1.8.10"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 androidx-graphics-shapes = { module = "androidx.graphics:graphics-shapes", version.ref = "graphicsShapes" }
 androidx-material = { module = "androidx.compose.material:material" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
