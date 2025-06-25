@@ -1,4 +1,4 @@
-package hn.news.app.ui
+package hn.news.app.ui.base
 
 sealed class Screens(
     open var route: String,

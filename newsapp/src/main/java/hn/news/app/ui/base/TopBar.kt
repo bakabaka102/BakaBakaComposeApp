@@ -1,4 +1,4 @@
-package hn.news.app.ui
+package hn.news.app.ui.base
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -9,36 +9,20 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import hn.news.app.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(title: String = stringResource(R.string.news), onBackClicked: () -> Unit) {
-
-    /*TopAppBar(
-        navigationIcon = {
-            IconButton(onClick = { onBackClicked }) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back"
-                )
-            }
-        },
-        title = {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    title,
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
-        }
-    )*/
     TopAppBar(
-        title = { Text(
-            text = title,
-            maxLines = 1,
-            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
-        ) },
+        title = {
+            Text(
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
         navigationIcon = {
             IconButton(onClick = { onBackClicked.invoke() }) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Quay lại")

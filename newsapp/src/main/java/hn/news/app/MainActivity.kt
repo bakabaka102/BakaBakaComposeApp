@@ -13,13 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import hn.news.app.ui.Screens
+import hn.news.app.ui.base.Screens
 import hn.news.app.ui.explore.ExploreScreen
 import hn.news.app.ui.home.BottomBar
 import hn.news.app.ui.home.HomeScreen

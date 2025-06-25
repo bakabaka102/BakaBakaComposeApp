@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -16,6 +18,8 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+        val apiKey = getApiKey()
+        buildConfigField("String", "API_KEY", apiKey)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,14 +34,21 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+
+    packaging {
+        resources {
+            excludes += "META-INF/gradle/incremental.annotation.processors"
+        }
     }
 }
 
@@ -64,6 +75,27 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.androidx.foundation)
 
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.compiler)
+    implementation(libs.kotlinx.serialization.json)
 
+}
 
+fun getApiKey(): String {
+    val properties = Properties()
+    val keystoreFile = project.rootProject.file("gradle.properties")
+    properties.load(keystoreFile.inputStream())
+    //val apiKey = properties.getProperty("apiKey") ?: ""
+
+    val propertiesFile = project.rootProject.file("gradle.properties")
+    val apiKey = if (propertiesFile.exists()) {
+        properties.load(propertiesFile.inputStream())
+        properties.getProperty("apiKey") ?: ""
+    } else {
+        System.getenv("apiKey") ?: ""
+    }
+    return apiKey
 }

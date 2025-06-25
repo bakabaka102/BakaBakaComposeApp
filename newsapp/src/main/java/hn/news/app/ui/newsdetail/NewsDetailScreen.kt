@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import hn.news.app.ui.TopBar
+import hn.news.app.ui.base.TopBar
 import hn.news.app.ui.home.News
 
 
