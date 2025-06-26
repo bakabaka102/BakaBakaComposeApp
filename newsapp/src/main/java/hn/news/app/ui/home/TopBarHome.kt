@@ -13,7 +13,7 @@ import hn.news.app.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarHome(title: String = stringResource(R.string.news)) {
+fun TopBarHome(title: String = stringResource(R.string.app_name)) {
     TopAppBar(
         title = {
             Box(modifier = Modifier.fillMaxWidth()) {

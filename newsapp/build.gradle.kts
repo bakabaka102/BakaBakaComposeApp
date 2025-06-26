@@ -6,16 +6,22 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.parcelize)
     //kotlin("plugin.parcelize")
+    id("kotlin-kapt")
+    //id("dagger.hilt.android.plugin") version "2.53.1" // <--- Chú ý thêm version ở đây! // <--- thêm dòng này!
+    id("com.google.dagger.hilt.android") version "2.56.2" apply false //<-- this one //for Hilt
+    id("dagger.hilt.android.plugin")
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.0"
+    //id("kotlinx-serialization")
 }
 
 android {
     namespace = "hn.news.app"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "hn.news.app"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
         val apiKey = getApiKey()
@@ -37,9 +43,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
+    /*kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
-    }
+    }*/
     buildFeatures {
         compose = true
         buildConfig = true
@@ -50,6 +56,10 @@ android {
             excludes += "META-INF/gradle/incremental.annotation.processors"
         }
     }
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 dependencies {
@@ -81,6 +91,9 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.compiler)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.hilt.navigation.compose)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.coil.compose)
 
 }
 

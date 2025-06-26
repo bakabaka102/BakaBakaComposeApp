@@ -14,7 +14,7 @@ import hn.news.app.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(title: String = stringResource(R.string.news), onBackClicked: () -> Unit) {
+fun TopBar(title: String = stringResource(R.string.app_name), onBackClicked: () -> Unit) {
     TopAppBar(
         title = {
             Text(

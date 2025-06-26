@@ -10,13 +10,17 @@ interface NewsApiService {
 
     @GET(Constants.QUERY_EVERYTHING_URL)
     suspend fun queryNews(
-        @Query("q") query: String,
-        @Query("apiKey") apiKey: String = BuildConfig.API_KEY,
+        @Query("q")
+        query: String,
+        @Query("apiKey")
+        apiKey: String = BuildConfig.API_KEY,
     ): NewsResponse
 
     @GET(Constants.QUERY_TOP_HEAD_LINES)
     suspend fun getTopHeadlines(
-        @Query("country") country: String = "vi",
-        @Query("apiKey") apiKey: String,
+        @Query("country")
+        country: String = "us",
+        @Query("apiKey")
+        apiKey: String = BuildConfig.API_KEY,
     ): NewsResponse
 }

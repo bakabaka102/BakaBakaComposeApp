@@ -1,23 +1,26 @@
 [versions]
 agp = "8.7.3"
+coilCompose = "2.7.0"
 foundation = "1.8.3"
 graphicsShapes = "1.0.1"
-hiltAndroid = "2.53.1"
-hiltCompiler = "2.53.1"
-kotlin = "2.0.0"
-coreKtx = "1.15.0"
+hiltAndroid = "2.56.2"
+hiltAndroidCompiler = "2.56.2"
+hiltCompiler = "2.56.2"
+hiltNavigationCompose = "1.2.0"
+kotlin = "2.2.0"
+coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-kotlinxSerializationJson = "1.7.3"
-lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.9.3"
-composeBom = "2024.11.00"
+kotlinxSerializationJson = "1.8.1"
+lifecycleRuntimeKtx = "2.9.1"
+activityCompose = "1.10.1"
+composeBom = "2025.06.01"
 loggingInterceptor = "4.12.0"
-navigationCompose = "2.8.4"
-liveDataCompose = "1.7.5"
+navigationCompose = "2.9.0"
+liveDataCompose = "1.8.3"
 #material-icons-extended = "1.6.8"
-kotlinParcelize = "1.8.10"
+kotlinParcelize = "2.2.0"
 okhttp = "4.12.0"
 retrofit2KotlinxSerializationConverter = "1.0.0"
 
@@ -25,8 +28,11 @@ retrofit2KotlinxSerializationConverter = "1.0.0"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 androidx-graphics-shapes = { module = "androidx.graphics:graphics-shapes", version.ref = "graphicsShapes" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-material = { module = "androidx.compose.material:material" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

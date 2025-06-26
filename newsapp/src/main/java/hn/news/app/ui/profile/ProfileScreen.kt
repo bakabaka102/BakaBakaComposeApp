@@ -13,13 +13,15 @@ import androidx.compose.ui.unit.dp
 import hn.news.app.ui.base.TopBar
 
 @Composable
-fun ProfileScreen(onBackClicked : () -> Unit) {
+fun ProfileScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
-            TopBar(onBackClicked = onBackClicked)
+            TopBar(onBackClick = onBackClick)
         }
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding).padding(16.dp)) {
+        Column(modifier = Modifier
+            .padding(innerPadding)
+            .padding(16.dp)) {
             Text(text = "ProfileScreen", style = MaterialTheme.typography.titleLarge)
             Spacer(modifier = Modifier.height(8.dp))
         }
