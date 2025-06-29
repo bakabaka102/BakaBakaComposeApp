@@ -1,7 +1,7 @@
-package hn.news.app.data.remote
+package hn.single.network.remote
 
-import hn.news.app.BuildConfig
-import hn.news.app.data.model.Article
+import hn.single.network.BuildConfig
+import hn.single.network.remote.model.Article
 import javax.inject.Inject
 
 class NewsRemoteDataSource @Inject constructor(
@@ -15,8 +15,16 @@ class NewsRemoteDataSource @Inject constructor(
         return response.articles
     }
 
-    suspend fun queryNews(
+    suspend fun queryNewsBTC(
         query: String = "btc",
+        apiKey: String = BuildConfig.API_KEY,
+    ): List<Article> {
+        val response = apiService.queryNews(query, apiKey)
+        return response.articles
+    }
+
+    suspend fun queryNewsETH(
+        query: String = "eth",
         apiKey: String = BuildConfig.API_KEY,
     ): List<Article> {
         val response = apiService.queryNews(query, apiKey)

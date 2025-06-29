@@ -1,12 +1,17 @@
 package hn.news.app.di
 
+import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hn.news.app.BuildConfig
 import hn.news.app.data.Constants
+import hn.news.app.data.network.InternetAvailabilityRepository
+import hn.news.app.data.network.NetworkStatusTracker
+import hn.news.app.data.network.NoInternetInterceptor
 import hn.news.app.data.remote.NewsApiService
 import java.util.concurrent.TimeUnit
 import kotlinx.serialization.json.Json
@@ -22,7 +27,31 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideNetworkStatusTracker(
+        @ApplicationContext context: Context
+    ): NetworkStatusTracker {
+        return NetworkStatusTracker(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideInternetAvailabilityRepository(
+        networkStatusTracker: NetworkStatusTracker
+    ): InternetAvailabilityRepository {
+        return InternetAvailabilityRepository(networkStatusTracker)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNoInternetInterceptor(
+        internetAvailabilityRepository: InternetAvailabilityRepository
+    ): NoInternetInterceptor {
+        return NoInternetInterceptor(internetAvailabilityRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(noInternetInterceptor: NoInternetInterceptor): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY // LOG TOÀN BỘ request/response
@@ -36,6 +65,7 @@ object NetworkModule {
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(logging)
+            .addInterceptor(noInternetInterceptor)
             .build()
     }
 

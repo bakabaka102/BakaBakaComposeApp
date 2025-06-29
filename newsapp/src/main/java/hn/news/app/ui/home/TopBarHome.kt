@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import hn.news.app.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -18,8 +19,9 @@ fun TopBarHome(title: String = stringResource(R.string.app_name)) {
         title = {
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    title,
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
+                    text = title,
+                    fontWeight = FontWeight.Bold,
                 )
             }
         }

@@ -1,6 +1,8 @@
 package hn.news.app.ui.newsdetail
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,16 +26,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import hn.news.app.R
 import hn.news.app.data.model.Article
 import hn.news.app.ui.base.NewsDetailTopBar
 import hn.news.app.ui.base.Screens
 
+
+@SuppressLint("QueryPermissionsNeeded")
 @Composable
 fun NewsDetailScreen(
     navController: NavController,
@@ -134,6 +140,7 @@ fun NewsDetailScreen(
                 // Link gốc
                 Spacer(modifier = Modifier.height(16.dp))
                 val context = LocalContext.current
+                val notFoundAPp = stringResource(R.string.not_found_app)
                 Text(
                     text = "Xem bài gốc",
                     style = MaterialTheme.typography.labelLarge.copy(
@@ -143,7 +150,14 @@ fun NewsDetailScreen(
                     modifier = Modifier
                         .clickable {
                             val intent = Intent(Intent.ACTION_VIEW, news.url.toUri())
-                            context.startActivity(intent, null)
+                            if (intent.resolveActivity(context.packageManager) != null) {
+                                context.startActivity(intent)
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    notFoundAPp, Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                         .padding(4.dp)
                 )

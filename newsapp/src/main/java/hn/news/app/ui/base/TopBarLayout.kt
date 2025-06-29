@@ -12,6 +12,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import hn.news.app.R
@@ -20,15 +21,17 @@ import hn.news.app.R
 @Composable
 fun TopBar(
     title: String = stringResource(R.string.app_name),
+    needShowIconCustom: Boolean = false,
     onBackClick: () -> Unit,
-    onCustomIconClick: () -> Unit = {}
+    onCustomIconClick: () -> Unit = {},
 ) {
     TopAppBar(
         title = {
             Text(
                 text = title,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                fontWeight = FontWeight.Bold,
             )
         },
         navigationIcon = {
@@ -39,11 +42,13 @@ fun TopBar(
                         contentDescription = "Back"
                     )
                 }
-                IconButton(onClick = onCustomIconClick) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown, // Hoặc icon bạn muốn, ví dụ Icons.Default.Share
-                        contentDescription = "Custom Icon"
-                    )
+                if (needShowIconCustom) {
+                    IconButton(onClick = onCustomIconClick) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            contentDescription = "Custom Icon"
+                        )
+                    }
                 }
             }
         }
@@ -53,5 +58,5 @@ fun TopBar(
 @Composable
 @Preview(showBackground = true)
 fun TopBarPreview() {
-    TopBar(onBackClick = {})
+    TopBar(onBackClick = {}, needShowIconCustom = true)
 }

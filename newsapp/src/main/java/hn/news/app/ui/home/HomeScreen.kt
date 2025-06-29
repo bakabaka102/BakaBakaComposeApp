@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,6 +24,7 @@ import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -38,15 +40,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import hn.news.app.data.model.Article
+import hn.news.app.data.network.UIState
 
 @Composable
 fun HomeScreen(viewModel: NewsViewModel = hiltViewModel(), onItemClicked: (Article) -> Unit = {}) {
     val tabs = listOf("Dành cho bạn", "Tin nổi bật", "Thế giới")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
-    val newsList = viewModel.newsList
-    val isLoading = viewModel.isLoading
-    val errorMessage = viewModel.errorMessage
+    LaunchedEffect(selectedTabIndex) {
+        when (selectedTabIndex) {
+            0 -> viewModel.fetchNews()
+            1 -> viewModel.queryNews(query = "btc")
+            2 -> viewModel.queryNews(query = "eth")
+        }
+    }
+    val newsUiState: UIState<List<Article>> = viewModel.newsUiState
+    val newsQuery: UIState<List<Article>> = viewModel.newsQuery
 
     Column {
         TopBarHome()
@@ -69,7 +78,12 @@ fun HomeScreen(viewModel: NewsViewModel = hiltViewModel(), onItemClicked: (Artic
                 Tab(
                     selected = isSelected,
                     onClick = { selectedTabIndex = index },
-                    modifier = Modifier.background(color = backgroundColor, shape = RoundedCornerShape(10.dp)).height(40.dp),
+                    modifier = Modifier
+                        .background(
+                            color = backgroundColor,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .height(40.dp),
                     text = {
                         Text(text = title, color = textColor)
                     }
@@ -79,48 +93,54 @@ fun HomeScreen(viewModel: NewsViewModel = hiltViewModel(), onItemClicked: (Artic
 
         when (selectedTabIndex) {
             0 -> {
-                if (isLoading) {
-                    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(Modifier.padding(16.dp))
-                    }
-                } else if (errorMessage != null) {
-                    Text(
-                        errorMessage,
-                        color = Color.Red,
-                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
-                    )
-                } else {
-                    NewsList(newsList, onItemClicked)
-                }
+                TabScreen(newsUiState, onItemClicked)
             }
 
-            else -> {
-                if (isLoading) {
-                    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(Modifier.padding(16.dp))
-                    }
-                } else if (errorMessage != null) {
-                    Text(
-                        errorMessage,
-                        color = Color.Red,
-                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
-                    )
-                } else {
-                    NewsList(newsList, onItemClicked)
-                }
+            1 -> {
+                TabScreen(newsQuery, onItemClicked)
             }
-            /*1 -> NewsList(newsListTrending, onItemClicked)
-            2 -> NewsList(newsListWorld, onItemClicked)*/
+
+            2 -> {
+                TabScreen(newsQuery, onItemClicked)
+            }
+        }
+    }
+}
+
+@Composable
+private fun TabScreen(
+    uiState: UIState<List<Article>>,
+    onItemClicked: (Article) -> Unit,
+) {
+    when (uiState) {
+        is UIState.Loading -> {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is UIState.Success -> {
+            NewsList(uiState.data, onItemClicked)
+        }
+
+        is UIState.Failure -> {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(
+                    text = "Có lỗi xảy ra: ${uiState.throwable.message ?: "Không xác định"}",
+                    color = Color.Red,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }
 
 @Composable
 fun NewsList(newsList: List<Article>, onItemClicked: (Article) -> Unit = {}) {
-    LazyColumn(contentPadding = PaddingValues(16.dp)) {
+    LazyColumn(contentPadding = PaddingValues(12.dp)) {
         items(newsList.size) { index ->
             NewsItem(newsList[index], onItemClicked)
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(6.dp))
         }
     }
 }

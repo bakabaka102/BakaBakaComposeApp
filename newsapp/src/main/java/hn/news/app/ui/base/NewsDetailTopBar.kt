@@ -19,7 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import hn.news.app.R
-import hn.news.app.data.model.Article
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
