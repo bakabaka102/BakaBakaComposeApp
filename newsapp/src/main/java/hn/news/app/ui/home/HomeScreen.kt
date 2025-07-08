@@ -39,7 +39,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import hn.news.app.data.model.Article
+import hn.single.network.remote.model.Article
 import hn.news.app.data.network.UIState
 
 @Composable

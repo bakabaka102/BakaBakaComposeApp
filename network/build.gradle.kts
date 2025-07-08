@@ -4,6 +4,12 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    //id("kotlin-kapt")
+    alias(libs.plugins.kotlin.kapt)
+    //id("dagger.hilt.android.plugin")
+    alias(libs.plugins.hilt)
+    //id("org.jetbrains.kotlin.plugin.serialization") version "2.2.0"
+    alias(libs.plugins.kotlin.serialization) /*version "2.2.0"*/ //Missing can not convert json from remote server
 }
 
 android {
@@ -44,9 +50,9 @@ android {
 
 }
 
-kotlin {
+/*kotlin {
     jvmToolchain { 17 }
-}
+}*/
 
 dependencies {
 
@@ -55,6 +61,7 @@ dependencies {
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.hilt.android)
     implementation(libs.hilt.compiler)
+    kapt(libs.hilt.android.compiler)
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.core.ktx)

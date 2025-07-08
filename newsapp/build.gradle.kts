@@ -6,11 +6,15 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.parcelize)
     //kotlin("plugin.parcelize")
-    id("kotlin-kapt")
+    //id("kotlin-kapt")
+    alias(libs.plugins.kotlin.kapt)
     //id("dagger.hilt.android.plugin") version "2.53.1" // <--- Chú ý thêm version ở đây! // <--- thêm dòng này!
-    id("com.google.dagger.hilt.android") version "2.56.2" apply false //<-- this one //for Hilt
-    id("dagger.hilt.android.plugin")
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.0"
+    //id("com.google.dagger.hilt.android") version "2.56.2" apply false //<-- this one //for Hilt
+    alias(libs.plugins.dagger.hilt.android)
+    //id("dagger.hilt.android.plugin")
+    alias(libs.plugins.hilt)
+    //id("org.jetbrains.kotlin.plugin.serialization") version "2.2.0"
+    alias(libs.plugins.kotlin.serialization)
     //id("kotlinx-serialization")
 }
 

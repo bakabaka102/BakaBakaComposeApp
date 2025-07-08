@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hn.news.app.BuildConfig
-import hn.news.app.data.model.Article
-import hn.news.app.data.network.ApiResult
+import hn.single.network.remote.model.Article
 import hn.news.app.data.network.UIState
-import hn.news.app.data.remote.NewsRepository
+import hn.single.network.ApiResult
+import hn.single.network.remote.NewsRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -34,10 +34,9 @@ import androidx.core.net.toUri
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import hn.news.app.R
-import hn.news.app.data.model.Article
 import hn.news.app.ui.base.NewsDetailTopBar
 import hn.news.app.ui.base.Screens
-
+import hn.single.network.remote.model.Article
 
 @SuppressLint("QueryPermissionsNeeded")
 @Composable
@@ -122,7 +121,7 @@ fun NewsDetailScreen(
                 // Description
                 if (!news.description.isNullOrBlank()) {
                     Text(
-                        text = news.description,
+                        text = news.description.toString(),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium
                     )
@@ -132,7 +131,7 @@ fun NewsDetailScreen(
                 // Nội dung chính
                 if (news.content.isNullOrBlank().not()) {
                     Text(
-                        text = news.content,
+                        text = news.content.toString(),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }

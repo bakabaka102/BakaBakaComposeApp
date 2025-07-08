@@ -9,10 +9,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hn.news.app.BuildConfig
 import hn.news.app.data.Constants
-import hn.news.app.data.network.InternetAvailabilityRepository
-import hn.news.app.data.network.NetworkStatusTracker
-import hn.news.app.data.network.NoInternetInterceptor
-import hn.news.app.data.remote.NewsApiService
+import hn.single.network.InternetAvailabilityRepository
+import hn.single.network.NetworkStatusTracker
+import hn.single.network.NoInternetInterceptor
+import hn.single.network.remote.NewsApiService
 import java.util.concurrent.TimeUnit
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient

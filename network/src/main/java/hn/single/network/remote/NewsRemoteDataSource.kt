@@ -15,6 +15,14 @@ class NewsRemoteDataSource @Inject constructor(
         return response.articles
     }
 
+    suspend fun queryNews(
+        query: String = "btc",
+        apiKey: String = BuildConfig.API_KEY,
+    ): List<Article> {
+        val response = apiService.queryNews(query, apiKey)
+        return response.articles
+    }
+
     suspend fun queryNewsBTC(
         query: String = "btc",
         apiKey: String = BuildConfig.API_KEY,

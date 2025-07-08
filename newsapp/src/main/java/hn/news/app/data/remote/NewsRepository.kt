@@ -1,10 +1,11 @@
 package hn.news.app.data.remote
 
 import hn.news.app.BuildConfig
-import hn.news.app.data.model.Article
-import hn.news.app.data.network.ApiResult
-import hn.news.app.data.network.InternetAvailabilityRepository
-import hn.news.app.data.network.safeApiCall
+import hn.single.network.remote.model.Article
+import hn.single.network.ApiResult
+import hn.single.network.InternetAvailabilityRepository
+import hn.single.network.remote.NewsRemoteDataSource
+import hn.single.network.safeApiCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

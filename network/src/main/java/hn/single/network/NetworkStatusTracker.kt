@@ -8,6 +8,7 @@ import android.net.NetworkRequest
 import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -15,7 +16,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NetworkStatusTracker @Inject constructor(private val context: Context) {
+//class NetworkStatusTracker @Inject constructor(@ApplicationContext private val context: Context) {
+class NetworkStatusTracker (private val context: Context) {
 
     private val connectivityManager =
         /*context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager*/

@@ -28,7 +28,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import hn.news.app.data.model.Article
 import hn.news.app.ui.base.Screens
 import hn.news.app.ui.explore.ExploreScreen
 import hn.news.app.ui.home.BottomBar
@@ -38,6 +37,7 @@ import hn.news.app.ui.newsdetail.MiniOverlayCard
 import hn.news.app.ui.newsdetail.NewsDetailScreen
 import hn.news.app.ui.profile.ProfileScreen
 import hn.news.app.ui.theme.BakaBakaComposeAppTheme
+import hn.single.network.remote.model.Article
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

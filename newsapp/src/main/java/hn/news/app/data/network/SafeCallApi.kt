@@ -2,6 +2,7 @@ package hn.news.app.data.network
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import hn.single.network.InternetAvailabilityRepository
 
 suspend fun <T> safeApiCall(
     internetRepo: InternetAvailabilityRepository,
