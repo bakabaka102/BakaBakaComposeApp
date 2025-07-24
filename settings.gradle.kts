@@ -20,6 +20,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "BakaBakaComposeApp"
-include(":app")
-include(":newsapp")
-include(":network")
+include(":app", ":newsapp", ":network", ":aidl-library")

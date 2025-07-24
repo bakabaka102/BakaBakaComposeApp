@@ -45,6 +45,7 @@ android {
     }*/
     buildFeatures {
         compose = true
+        aidl = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -62,6 +63,7 @@ kotlin {
 
 dependencies {
 
+    implementation(project(":aidl-library"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

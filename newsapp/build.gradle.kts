@@ -53,6 +53,7 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+        aidl = true
     }
 
     packaging {
@@ -69,6 +70,7 @@ kotlin {
 dependencies {
 
     implementation(project(":network"))
+    implementation(project(":aidl-library"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

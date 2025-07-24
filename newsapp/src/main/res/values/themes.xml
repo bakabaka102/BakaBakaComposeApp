@@ -2,4 +2,14 @@
 <resources>
 
     <style name="Theme.BakaBakaComposeApp" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="OverlayDialogTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:backgroundDimEnabled">true</item> <!-- Mờ nền -->
+        <item name="android:windowIsTranslucent">true</item> <!-- Trong suốt -->
+        <item name="android:windowBackground">@android:color/transparent</item> <!-- Không nền -->
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>

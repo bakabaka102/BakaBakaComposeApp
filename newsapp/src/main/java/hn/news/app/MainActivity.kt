@@ -1,6 +1,9 @@
 package hn.news.app
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -38,6 +41,7 @@ import hn.news.app.ui.newsdetail.NewsDetailScreen
 import hn.news.app.ui.profile.ProfileScreen
 import hn.news.app.ui.theme.BakaBakaComposeAppTheme
 import hn.single.network.remote.model.Article
+import androidx.core.net.toUri
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -48,6 +52,18 @@ class MainActivity : ComponentActivity() {
             BakaBakaComposeAppTheme {
                 MainScreen()
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!Settings.canDrawOverlays(this)) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                "package:${this.packageName}".toUri()
+            )
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            this.startActivity(intent)
         }
     }
 }

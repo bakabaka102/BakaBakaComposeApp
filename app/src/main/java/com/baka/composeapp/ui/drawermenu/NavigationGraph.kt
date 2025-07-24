@@ -17,13 +17,14 @@ import com.baka.composeapp.ui.drawermenu.screen.SettingScreen
 fun SetUpNavGraph(
     navController: NavHostController,
     innerPadding: PaddingValues,
+    onClick: () -> Unit = {},
 ) {
     NavHost(
         navController = navController,
         startDestination = Screens.Home.route
     ) {
         composable(Screens.Home.route) {
-            HomeScreen(innerPadding = innerPadding)
+            HomeScreen(innerPadding = innerPadding, onClick)
         }
         composable(Screens.Notification.route) {
             NotificationScreen(innerPadding = innerPadding)

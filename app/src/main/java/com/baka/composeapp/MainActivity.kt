@@ -1,6 +1,11 @@
 package com.baka.composeapp
 
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -18,9 +23,60 @@ import com.baka.composeapp.ui.drawermenu.DrawerContent
 import com.baka.composeapp.ui.drawermenu.screen.Screens
 import com.baka.composeapp.ui.drawermenu.screen.drawerItems
 import com.baka.composeapp.ui.theme.BakaBakaComposeAppTheme
+import com.hn.libs.INewsService
+import com.hn.libs.RemoteConstants
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
+    private var remoteService: INewsService? = null
+    private var isBindService: Boolean = false
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+            remoteService = INewsService.Stub.asInterface(binder)
+            isBindService = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            remoteService = null
+            isBindService = false
+        }
+    }
+
+    private fun bindRemoteService() {
+        /*val intent = Intent().apply {
+            component = ComponentName(
+                "hn.news.app",                      // package name của newsapp
+                "hn.news.app.service.NewsService"  // full class name của Service
+            )
+        }*/
+
+        val intent = Intent(RemoteConstants.NEWS_APP_ACTION).apply {
+            setPackage(RemoteConstants.PACKAGE_NEWS_APP_SERVER)
+        }
+        isBindService = this.bindService(intent, serviceConnection, BIND_AUTO_CREATE).also {
+            Log.d("TAG", "bindRemoteService: $it")
+        }
+    }
+
+    private fun unBindRemoteService() {
+        if (isBindService) {
+            isBindService = false
+            remoteService = null
+            this.unbindService(serviceConnection)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        bindRemoteService()
+    }
+
+    override fun onDestroy() {
+        unBindRemoteService()
+        super.onDestroy()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +113,11 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                 ) {
-                    ContentOfScreen(topBarTitle, scope, drawerState, navController)
+                    ContentOfScreen(topBarTitle, scope, drawerState, navController) {
+                        remoteService?.showLayout("Name")?.let {
+                            bindRemoteService()
+                        }
+                    }
                 }
                 BackHandler(enabled = drawerState.isOpen) {
                     scope.launch { drawerState.close() }

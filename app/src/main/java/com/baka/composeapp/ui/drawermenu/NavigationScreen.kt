@@ -76,6 +76,7 @@ fun ContentOfScreen(
     scope: CoroutineScope,
     drawerState: DrawerState,
     navController: NavHostController,
+    onClick: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -99,6 +100,6 @@ fun ContentOfScreen(
         }
     ) { innerPadding ->
         Logger.d("PaddingValue ===== $innerPadding")
-        SetUpNavGraph(navController = navController, innerPadding = innerPadding)
+        SetUpNavGraph(navController = navController, innerPadding = innerPadding, onClick = onClick)
     }
 }
