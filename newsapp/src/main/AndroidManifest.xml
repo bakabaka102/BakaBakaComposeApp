@@ -32,13 +32,13 @@
         </activity>
 
         <activity
-            android:name=".OverlayActivity"
+            android:name=".OverlayDialogActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTask"
             android:showWhenLocked="true"
             android:taskAffinity=""
-            android:theme="@style/OverlayDialogTheme"
+            android:theme="@style/Theme.OverlayDialogActivity"
             android:turnScreenOn="true" />
 
 

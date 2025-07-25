@@ -49,9 +49,9 @@ fun HomeScreen(innerPadding: PaddingValues, onClick: () -> Unit = {}) {
         //Spacer(modifier = Modifier.padding(8.dp))
         //SomeActionDemo(viewModel)
         //Spacer(modifier = Modifier.padding(8.dp))
-        AnimationDrawPathPolygons()
+        //AnimationDrawPathPolygons()
         Spacer(modifier = Modifier.padding(8.dp))
-        AnimateVectorDrawableAlongPath()
+        //AnimateVectorDrawableAlongPath()
         Spacer(modifier = Modifier.padding(8.dp))
         CenteredBoxScreen(onClick)
         Spacer(modifier = Modifier.padding(80.dp))
@@ -62,7 +62,7 @@ fun HomeScreen(innerPadding: PaddingValues, onClick: () -> Unit = {}) {
 fun CenteredBoxScreen(onClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
-            .fillMaxWidth(1f)
+            .fillMaxWidth(0.8f)
             .background(Color.White)
             .padding(16.dp),
         contentAlignment = Alignment.Center

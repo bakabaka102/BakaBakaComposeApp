@@ -80,26 +80,37 @@ fun ContentOfScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = topBarTitle)
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            scope.launch {
-                                drawerState.open()
-                            }
-                        }) {
-                        Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = "menu"
-                        )
-                    }
-                })
+            MainTopAppBar(topBarTitle, scope, drawerState)
         }
     ) { innerPadding ->
         Logger.d("PaddingValue ===== $innerPadding")
         SetUpNavGraph(navController = navController, innerPadding = innerPadding, onClick = onClick)
     }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun MainTopAppBar(
+    topBarTitle: String,
+    scope: CoroutineScope,
+    drawerState: DrawerState,
+) {
+    TopAppBar(
+        title = {
+            Text(text = topBarTitle)
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = {
+                    scope.launch {
+                        drawerState.open()
+                    }
+                }) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "menu"
+                )
+            }
+        }
+    )
 }

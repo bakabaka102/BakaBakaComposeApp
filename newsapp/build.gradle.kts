@@ -89,6 +89,7 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
 
+    implementation(libs.material)
     implementation(libs.androidx.material)
     implementation(libs.androidx.foundation)
 
