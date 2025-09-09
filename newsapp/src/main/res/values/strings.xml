@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">News App</string>
     <string name="not_found_app">Không tìm thấy ứng dụng mở đường dẫn này!</string>
+
+    <string name="explorer">Explorer</string>
 </resources>

@@ -1,0 +1,162 @@
+package hn.news.app.ui.mainapp
+
+import android.util.Log
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import hn.news.app.ui.base.Screens
+import hn.news.app.ui.explore.ExploreScreen
+import hn.news.app.ui.home.BottomBar
+import hn.news.app.ui.home.HomeScreen
+import hn.news.app.ui.newsdetail.MiniOverlayCard
+import hn.news.app.ui.newsdetail.NewsDetailScreen
+import hn.news.app.ui.profile.ProfileScreen
+import hn.single.network.remote.model.Article
+
+@Composable
+fun MainScreen(openExplorer: Boolean = false) {
+
+    var miniArticle by remember { mutableStateOf<Article?>(null) }
+    var pendingMiniArticle by remember { mutableStateOf<Article?>(null) }
+
+    val navController = rememberNavController()
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = currentBackStackEntry?.destination
+
+    // Chỉ khởi tạo khi NavController vừa tạo
+    val startRoute = if (openExplorer) Screens.ExploreScreen.route else Screens.HomeScreen.route
+    LaunchedEffect(key1 = navController) {
+        navController.navigate(startRoute) {
+            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+    //
+
+    LaunchedEffect(currentDestination?.route) {
+        if (currentDestination?.route == Screens.HomeScreen.route && pendingMiniArticle != null) {
+            miniArticle = pendingMiniArticle
+            pendingMiniArticle = null
+        }
+    }
+
+    Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
+        bottomBar = {
+            if (shouldShowBottomBar(currentDestination)) {
+                BottomBar(navController)
+            }
+        }
+    ) { innerPadding ->
+        Log.d("HomeScreen", "Current route: ${currentDestination?.route}  --- Article: $miniArticle")
+        NavHost(
+            navController = navController,
+            startDestination = Screens.HomeScreen.route,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable(Screens.HomeScreen.route) {
+                HomeScreen(
+                    onItemClicked = { news ->
+                        //navController.navigate("detail/${news.title}/${news.source}/${news.timeAgo}")
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            Screens.NewsDetailScreen.title,
+                            news
+                        )
+                        navController.navigate(Screens.NewsDetailScreen.route)
+
+                    }
+                )
+            }
+
+            /*composable("detail/{title}/{source}/{timeAgo}") { backStackEntry ->
+                val title = backStackEntry.arguments?.getString("title") ?: ""
+                val source = backStackEntry.arguments?.getString("source") ?: ""
+                val timeAgo = backStackEntry.arguments?.getString("timeAgo") ?: ""
+                NewsDetailScreen(title, source, timeAgo, navController)
+            }*/
+
+            composable(
+                route = Screens.NewsDetailScreen.route,
+                /* arguments = listOf(
+                     navArgument("news") {
+                         type = NavType.ParcelableType(News::class.java)
+                     }
+                 )*/
+            ) { backStackEntry ->
+                /*val news = backStackEntry.arguments?.getParcelable<News>("news")
+                news?.let {
+                }*/
+                NewsDetailScreen(navController, onBackClick = {
+                    navController.popBackStack()
+                }, onDropDownClick = { article ->
+                    //miniArticle = article
+                    pendingMiniArticle = article
+                    navController.popBackStack() // Về HomeScreen
+                })
+            }
+
+            composable(Screens.ExploreScreen.route) {
+                ExploreScreen(onBackClick = { navController.popBackStack() })
+            }
+
+            composable(Screens.ProfileScreen().route) {
+                ProfileScreen(onBackClick = { navController.popBackStack() })
+            }
+        }
+        // Mini overlay nổi lên trên Home
+        // Chỉ hiện MiniOverlayCard khi đang ở HomeScreen
+        //if (miniArticle != null && currentDestination?.route == Screens.HomeScreen.route) {
+        /*AnimatedVisibility(
+            visible = true,
+            enter = fadeIn() + slideInVertically { it },
+            exit = fadeOut() + slideOutVertically { it }
+        ) {*/
+        //if (currentDestination?.route == Screens.HomeScreen.route) {
+        miniArticle?.let { article ->
+            MiniOverlayCard(
+                article = article,
+                onFullScreen = {
+                    navController.currentBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(Screens.NewsDetailScreen.title, article)
+                    navController.navigate(Screens.NewsDetailScreen.route)
+                },
+                onClose = {
+                    miniArticle = null
+                }
+            )
+        }
+        //}
+        //}
+        //}
+    }
+}
+
+@Composable
+private fun shouldShowBottomBar(currentDestination: NavDestination?): Boolean {
+
+    val bottomBarRoutes = listOf(
+        Screens.HomeScreen.route,
+        Screens.ExploreScreen.route,
+        Screens.ProfileScreen().route
+    )
+
+    return currentDestination?.hierarchy?.any { destination ->
+        destination.route in bottomBarRoutes
+    } == true
+}

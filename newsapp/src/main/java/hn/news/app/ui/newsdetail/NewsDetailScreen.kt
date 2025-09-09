@@ -139,7 +139,7 @@ fun NewsDetailScreen(
                 // Link gốc
                 Spacer(modifier = Modifier.height(16.dp))
                 val context = LocalContext.current
-                val notFoundAPp = stringResource(R.string.not_found_app)
+                val notFoundApp = stringResource(R.string.not_found_app)
                 Text(
                     text = "Xem bài gốc",
                     style = MaterialTheme.typography.labelLarge.copy(
@@ -154,7 +154,7 @@ fun NewsDetailScreen(
                             } else {
                                 Toast.makeText(
                                     context,
-                                    notFoundAPp, Toast.LENGTH_SHORT
+                                    notFoundApp, Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
